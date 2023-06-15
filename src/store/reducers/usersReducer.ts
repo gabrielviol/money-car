@@ -1,5 +1,6 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { updateUsers } from '../actions/updateUsers';
+import { createSlice } from '@reduxjs/toolkit';
+import { AppState } from '..';
+import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
   users: [
@@ -21,10 +22,32 @@ const initialState = {
   ],
 };
 
-const usersReducer = createReducer(initialState, (builder) => {
-  builder.addCase(updateUsers, (state, action) => {
-    state.users = action.payload;
-  })
-});
+export const user = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUsers(state, action) {
+      state.users = action.payload
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.product,
+      }
+    }
+  }
+})
 
-export default usersReducer;
+export const { setUsers } = user.actions
+export const selectProductsState = (state: AppState) => state.users;
+export default user.reducer;
+
+// const usersReducer = createReducer(initialState, (builder) => {
+//   builder.addCase(updateUsers, (state, action) => {
+//     state.users = action.payload;
+//   })
+// });
+
+// export default usersReducer;
