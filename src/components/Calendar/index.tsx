@@ -7,6 +7,10 @@ import { getWeekDays } from "@/utils/get-week-days";
 import * as React from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { Text } from "@ignite-ui/react";
+import { users } from "@/utils/users";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUsers } from "@/store/actions/updateUsers";
+import { RootState, User } from "@/store/reducers";
 
 interface CalendarWeek {
   week: number
@@ -16,30 +20,25 @@ interface CalendarWeek {
   }>
 }
 
-const dataUsers = [
-  {
-    id: 1,
-    name: 'Gabriel',
-    total: 0
-  },
-  {
-    id: 2,
-    name: 'Rebecca',
-    total: 0
-  },
-  {
-    id: 3,
-    name: 'Ninguém',
-    total: 0
-  }
-]
-
 type CalendarWeeks = CalendarWeek[]
 
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+
+  const isDateSelected = !!selectedDate
+
+  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
+
+  const describeDate = selectedDate
+    ? dayjs(selectedDate).format('DD[ de ]MMMM')
+    : null
+
+  const selectedDateWithoutTime = selectedDate
+    ? dayjs(selectedDate).format('YYYY-MM-DD')
+    : null
 
   const router = useRouter()
 
@@ -118,6 +117,26 @@ export function Calendar() {
     },
     [],
   )
+
+  const dispatch = useDispatch();
+
+  const selectedUser = useSelector((state: RootState) => state.users);
+
+  const handleSetUser = (selectedUser: string) => {
+    const updatedUsers = users.map((user) => {
+      if (user.name === selectedUser) {
+        return {
+          ...user,
+          total: user.total + 1
+        };
+      }
+      return user;
+    });
+    dispatch(updateUsers(updatedUsers));
+  };
+
+  console.log(selectedUser)
+
   const RadioGroupDemo = ({ name, key }: any) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <RadioGroupItem value={name} id={key}>
@@ -133,7 +152,7 @@ export function Calendar() {
     <CalendarContainer>
       <CalendarHeader>
         <CalendarTitle>
-          Junho <span>2023</span>
+          {currentMonth} <span>{currentYear}</span>
         </CalendarTitle>
         <CalendarActions>
           <button onClick={handlePreviousMonth} title="Previous month">
@@ -164,10 +183,13 @@ export function Calendar() {
                         <Popover.Portal>
                           <PopoverDay>
                             <form>
-                              <RadioGroupRoot aria-label="View density">
+                              <RadioGroupRoot
+                                aria-label="View density"
+                                onValueChange={(value) => handleSetUser(value)}
+                              >
                                 <Text>Quem Levou?</Text>
-                                {dataUsers.map(user => {
-                                  return <RadioGroupDemo key={user.id} name={user.name} />
+                                {users.map(user => {
+                                  return <RadioGroupDemo key={Math.floor(Math.random() * 101)} name={user.name} />
                                 })}
                               </RadioGroupRoot>
                             </form>

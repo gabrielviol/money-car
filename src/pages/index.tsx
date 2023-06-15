@@ -1,19 +1,40 @@
 import { Calendar } from "@/components/Calendar";
-import { Container, Content } from "./style";
-import { Checkbox, Text } from "@ignite-ui/react";
+import { Container, Content, TableUsers } from "./style";
+import { Text } from "@ignite-ui/react";
+import { connect } from "react-redux";
+import { RootState, User } from "@/store/reducers";
 
-export default function Home() {
+interface HomeProps {
+  users: User[]
+}
+
+const Home = ({ users }: HomeProps) => {
+  console.log(users)
   return (
     <Container>
       <Content>
         <Calendar />
       </Content>
       <div>
-        <Checkbox />
-        <Text>Gabriel</Text>
-        <Text>Dia(s): 5</Text>
-        <Text>Total: R$ 20 </Text>
+        <TableUsers>
+          <tbody>
+            {users.map(user => {
+              return (
+                <tr key={user.id}>
+                  <td><Text>{user.name}</Text></td>
+                  <td><Text>Total: {user.total} </Text></td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </TableUsers>
       </div>
     </Container>
   )
 }
+
+const mapStateToProps = (state: RootState) => ({
+  users: state.users,
+});
+
+export default connect(mapStateToProps)(Home);
