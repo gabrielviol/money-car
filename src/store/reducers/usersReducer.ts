@@ -2,7 +2,19 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppState } from '..';
 import { HYDRATE } from 'next-redux-wrapper';
 
-const initialState = {
+interface userList{
+  users:{
+    id: number;
+    name: string;
+    total: number;
+  }[]
+  selectedUser: string | null,
+  selections: {
+    [key: string]: number
+  } ,
+}
+
+const initialState: userList = {
   users: [
     {
       id: 1,
@@ -20,6 +32,8 @@ const initialState = {
       total: 0,
     },
   ],
+  selectedUser: null,
+  selections: {},
 };
 
 export const user = createSlice({
@@ -29,6 +43,15 @@ export const user = createSlice({
     setUsers(state, action) {
       state.users = action.payload
     },
+    setSelectedUser(state, action) {
+      state.selectedUser = action.payload;
+    },
+    incrementSelection(state) {
+      const { selectedUser, selections } = state;
+      if (selectedUser) {
+        selections[selectedUser] = (selections[selectedUser] || 0) + 1;
+      }
+    }
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -40,14 +63,6 @@ export const user = createSlice({
   }
 })
 
-export const { setUsers } = user.actions
-export const selectProductsState = (state: AppState) => state.users;
+export const { setUsers, setSelectedUser, incrementSelection } = user.actions
+export const setUserState = (state: AppState) => state.users;
 export default user.reducer;
-
-// const usersReducer = createReducer(initialState, (builder) => {
-//   builder.addCase(updateUsers, (state, action) => {
-//     state.users = action.payload;
-//   })
-// });
-
-// export default usersReducer;

@@ -1,15 +1,11 @@
 import { Calendar } from "@/components/Calendar";
 import { Container, Content, TableUsers } from "./style";
 import { Text } from "@ignite-ui/react";
-import { connect } from "react-redux";
-import { RootState, User } from "@/store/reducers";
+import { connect, useSelector } from "react-redux";
+import { setUserState } from "@/store/reducers/usersReducer";
 
-interface HomeProps {
-  users: User[]
-}
-
-const Home = ({ users }: HomeProps) => {
-  console.log(users)
+export default function Home (){
+  const { users } = useSelector(setUserState)
   return (
     <Container>
       <Content>
@@ -18,7 +14,7 @@ const Home = ({ users }: HomeProps) => {
       <div>
         <TableUsers>
           <tbody>
-            {users.map(user => {
+            {users.map((user) => {
               return (
                 <tr key={user.id}>
                   <td><Text>{user.name}</Text></td>
@@ -32,9 +28,3 @@ const Home = ({ users }: HomeProps) => {
     </Container>
   )
 }
-
-const mapStateToProps = (state: RootState) => ({
-  users: state.users,
-});
-
-export default connect(mapStateToProps)(Home);

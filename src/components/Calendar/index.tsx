@@ -9,8 +9,7 @@ import * as Popover from '@radix-ui/react-popover';
 import { Text } from "@ignite-ui/react";
 import { users } from "@/utils/users";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUsers } from "@/store/actions/updateUsers";
-import { RootState, User } from "@/store/reducers";
+import {  incrementSelection, setSelectedUser, setUserState } from "@/store/reducers/usersReducer";
 
 interface CalendarWeek {
   week: number
@@ -120,19 +119,12 @@ export function Calendar() {
 
   const dispatch = useDispatch();
 
-  const selectedUser = useSelector((state: RootState) => state.users);
+ const selectedUser = useSelector(setUserState)
 
   const handleSetUser = (selectedUser: string) => {
-    const updatedUsers = users.map((user) => {
-      if (user.name === selectedUser) {
-        return {
-          ...user,
-          total: user.total + 1
-        };
-      }
-      return user;
-    });
-    dispatch(updateUsers(updatedUsers));
+    console.log(selectedUser)
+    dispatch(setSelectedUser(selectedUser));
+    dispatch(incrementSelection());
   };
 
   console.log(selectedUser)
