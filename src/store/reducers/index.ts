@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import usersReducer from './usersReducer';
+import driverReducer from './driverReducer';
 
 export default combineReducers({
-  users: usersReducer,
+  drivers: driverReducer
 });
 

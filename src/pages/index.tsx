@@ -1,11 +1,12 @@
 import { Calendar } from "@/components/Calendar";
 import { Container, Content, TableUsers } from "./style";
 import { Text } from "@ignite-ui/react";
-import { connect, useSelector } from "react-redux";
-import { setUserState } from "@/store/reducers/usersReducer";
+import { useSelector } from "react-redux";
+import { setDriversState } from "@/store/reducers/driverReducer";
 
-export default function Home (){
-  const { users } = useSelector(setUserState)
+export default function Home() {
+  const drivers = useSelector(setDriversState)
+  console.log(drivers)
   return (
     <Container>
       <Content>
@@ -14,11 +15,11 @@ export default function Home (){
       <div>
         <TableUsers>
           <tbody>
-            {users.map((user) => {
+            {drivers.map((driver) => {
               return (
-                <tr key={user.id}>
-                  <td><Text>{user.name}</Text></td>
-                  <td><Text>Total: {user.total} </Text></td>
+                <tr key={driver.id}>
+                  <td><Text>{driver.name}</Text></td>
+                  <td><Text>Total de Dias: {driver.days} </Text></td>
                 </tr>
               )
             })}

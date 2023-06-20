@@ -1,12 +1,12 @@
 import { ThunkAction, configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from "next-redux-wrapper"
 import { Action } from "redux"
-import usersReducer from './reducers/usersReducer';
+import driverReducer from './reducers/driverReducer';
 
 const makeStore = () =>
   configureStore({
     reducer: {
-      users: usersReducer,
+      drivers: driverReducer
     },
     devTools: true
   });

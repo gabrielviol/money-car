@@ -1,5 +1,17 @@
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
-import { CalendarActions, CalendarBody, CalendarContainer, CalendarDay, CalendarHeader, CalendarTitle, Label, PopoverDay, RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from "./styles";
+import {
+  CalendarActions,
+  CalendarBody,
+  CalendarContainer,
+  CalendarDay,
+  CalendarHeader,
+  CalendarTitle,
+  Label,
+  PopoverDay,
+  RadioGroupIndicator,
+  RadioGroupItem,
+  RadioGroupRoot
+} from "./styles";
 import { useState } from "react";
 import dayjs from 'dayjs'
 import { useRouter } from "next/dist/client/router";
@@ -7,9 +19,8 @@ import { getWeekDays } from "@/utils/get-week-days";
 import * as React from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { Text } from "@ignite-ui/react";
-import { users } from "@/utils/users";
 import { useDispatch, useSelector } from "react-redux";
-import {  incrementSelection, setSelectedUser, setUserState } from "@/store/reducers/usersReducer";
+import { incrementDay, setDriversState } from "@/store/reducers/driverReducer";
 
 interface CalendarWeek {
   week: number
@@ -25,6 +36,7 @@ export function Calendar() {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
   const isDateSelected = !!selectedDate
@@ -117,25 +129,28 @@ export function Calendar() {
     [],
   )
 
-  const dispatch = useDispatch();
-
- const selectedUser = useSelector(setUserState)
+  const dispatch = useDispatch()
+  const drivers = useSelector(setDriversState)
+  console.log(daysInMonthArray.map((date) => {
+    const dayInMonth = dayjs(date).format('YYYY-MM-DD')
+    return {
+      dayInMonth
+    }
+  }))
 
   const handleSetUser = (selectedUser: string) => {
     console.log(selectedUser)
-    dispatch(setSelectedUser(selectedUser));
-    dispatch(incrementSelection());
+    // dispatch(setSelectedUser(selectedUser));
+    dispatch(incrementDay(selectedUser));
   };
 
-  console.log(selectedUser)
-
-  const RadioGroupDemo = ({ name, key }: any) => (
+  const RadioGroupDemo = ({ value }: any) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <RadioGroupItem value={name} id={key}>
+      <RadioGroupItem value={value}>
         <RadioGroupIndicator />
       </RadioGroupItem>
-      <Label htmlFor={key}>
-        {name}
+      <Label>
+        {value.name}
       </Label>
     </div>
   )
@@ -177,11 +192,11 @@ export function Calendar() {
                             <form>
                               <RadioGroupRoot
                                 aria-label="View density"
-                                onValueChange={(value) => handleSetUser(value)}
+                                onValueChange={(props) => handleSetUser(props)}
                               >
                                 <Text>Quem Levou?</Text>
-                                {users.map(user => {
-                                  return <RadioGroupDemo key={Math.floor(Math.random() * 101)} name={user.name} />
+                                {drivers.map(driver => {
+                                  return <RadioGroupDemo key={driver.id} value={driver} />
                                 })}
                               </RadioGroupRoot>
                             </form>
