@@ -10,16 +10,16 @@ interface Driver {
 }
 
 interface Carpool {
-  idDriver: string
-  day: string
+  id: string
+  dayInMonth: string
 }
 
-interface DriverState {
+interface CarpoolState {
   drivers: Driver[]
   carpool: Carpool[]
 }
 
-const initialState: DriverState = {
+const initialState: CarpoolState = {
   drivers: StaticDrivers,
   carpool: []
 
@@ -32,12 +32,54 @@ export const driver = createSlice({
     setDrivers(state, action) {
       state.drivers = action.payload
     },
-    incrementDay(state, action) {
-      const index = state.drivers.findIndex(driver => driver.id === action.payload.id);
-      if (index !== -1) {
-        state.drivers[index].days += 1;
+    setCarpoolDay(state, action) {
+      const { id, dayInMonth } = action.payload;
+
+      const isDayTaken = state.carpool.some((carpoolDay) => carpoolDay.dayInMonth === dayInMonth);
+
+      const sameDriver = state.carpool.find((carpoolDay) => carpoolDay.id === id);
+
+      if (isDayTaken) {
+        if (sameDriver) {
+          return state; // Retorna o estado atual sem fazer nenhuma alteração
+        } else {
+          const previousDriverId = state.carpool.find((carpoolDay) => carpoolDay.dayInMonth === dayInMonth)?.id;
+          const previousDriverIndex = state.drivers.findIndex((driver) => driver.id === previousDriverId);
+          const newDriverIndex = state.drivers.findIndex((driver) => driver.id === id);
+
+          if (previousDriverIndex !== -1 && newDriverIndex !== -1) {
+            const updatedDrivers = [...state.drivers];
+            updatedDrivers[previousDriverIndex].days -= 1;
+            updatedDrivers[newDriverIndex].days += 1;
+
+            //const newCarpool = 
+
+            const updatedCarpool = [...state.carpool]
+            const newCarpool = (updatedCarpool.filter(item => item.id !== updatedCarpool[previousDriverIndex].id), action.payload)
+            //[...state.carpool.filter((carpoolDay) => carpoolDay.dayInMonth !== dayInMonth), action.payload];
+
+            //return { ...state, drivers: updatedDrivers, carpool: newCarpool };
+          }
+        }
+      } else {
+        const driverIndex = state.drivers.findIndex((driver) => driver.id === id);
+
+        if (driverIndex !== -1) {
+          const updatedDriver = { ...state.drivers[driverIndex] };
+          updatedDriver.days += 1;
+
+          const updatedDrivers = [...state.drivers];
+          updatedDrivers[driverIndex] = updatedDriver;
+
+          const updatedCarpool = [...state.carpool, action.payload];
+
+          return { drivers: updatedDrivers, carpool: updatedCarpool };
+        }
       }
+
+      return state;
     }
+
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -49,6 +91,6 @@ export const driver = createSlice({
   }
 })
 
-export const { setDrivers, incrementDay } = driver.actions
+export const { setDrivers, setCarpoolDay } = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers;
 export default driver.reducer;

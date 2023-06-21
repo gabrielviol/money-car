@@ -6,7 +6,6 @@ import { setDriversState } from "@/store/reducers/driverReducer";
 
 export default function Home() {
   const drivers = useSelector(setDriversState)
-  console.log(drivers)
   return (
     <Container>
       <Content>

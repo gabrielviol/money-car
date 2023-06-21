@@ -13,14 +13,14 @@ import {
   RadioGroupRoot
 } from "./styles";
 import { useState } from "react";
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { useRouter } from "next/dist/client/router";
 import { getWeekDays } from "@/utils/get-week-days";
 import * as React from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { Text } from "@ignite-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { incrementDay, setDriversState } from "@/store/reducers/driverReducer";
+import { setCarpoolDay, setDriversState } from "@/store/reducers/driverReducer";
 
 interface CalendarWeek {
   week: number
@@ -51,8 +51,6 @@ export function Calendar() {
     ? dayjs(selectedDate).format('YYYY-MM-DD')
     : null
 
-  const router = useRouter()
-
   function handlePreviousMonth() {
     const previousMonthDate = currentDate.subtract(1, 'month')
 
@@ -68,7 +66,6 @@ export function Calendar() {
 
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
-
   const daysInMonthArray = Array.from({
     length: currentDate.daysInMonth(),
   }).map((_, i) => {
@@ -131,17 +128,20 @@ export function Calendar() {
 
   const dispatch = useDispatch()
   const drivers = useSelector(setDriversState)
-  console.log(daysInMonthArray.map((date) => {
-    const dayInMonth = dayjs(date).format('YYYY-MM-DD')
-    return {
-      dayInMonth
-    }
-  }))
+  // console.log(daysInMonthArray.map((date) => {
+  //   const dayInMonth = dayjs(date).format('YYYY-MM-DD')
+  //   return {
+  //     dayInMonth
+  //   }
+  // }))
 
-  const handleSetUser = (selectedUser: string) => {
-    console.log(selectedUser)
-    // dispatch(setSelectedUser(selectedUser));
-    dispatch(incrementDay(selectedUser));
+  const handleSetDriver = ({ id }: any, date: Dayjs) => {
+    const dayInMonth = dayjs(date).format('YYYY-MM-DD')
+
+    const props = { id, dayInMonth }
+
+    // dispatch(incrementDay(id))
+    dispatch(setCarpoolDay(props));
   };
 
   const RadioGroupDemo = ({ value }: any) => (
@@ -192,7 +192,7 @@ export function Calendar() {
                             <form>
                               <RadioGroupRoot
                                 aria-label="View density"
-                                onValueChange={(props) => handleSetUser(props)}
+                                onValueChange={(props) => handleSetDriver(props, date)}
                               >
                                 <Text>Quem Levou?</Text>
                                 {drivers.map(driver => {
