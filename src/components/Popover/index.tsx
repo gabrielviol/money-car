@@ -13,7 +13,6 @@ export function PopOver({ date, disabled }: any) {
 
   const handleSetDriver = (id: any) => {
     setDriverId(id)
-    //{ id }: any, date: Dayjs
     const dayInMonth = dayjs(date).format('YYYY-MM-DD')
 
     const props = { id, dayInMonth }
