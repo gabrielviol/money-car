@@ -17,8 +17,8 @@ export function PopOver({ date, disabled }: any) {
 
     const props = { id, dayInMonth }
 
-    dispatch(setCarpoolDay(props));
-    dispatch(getAmountDays({ id }));
+    dispatch(setCarpoolDay(props))
+    dispatch(getAmountDays({ id }))
   };
 
   const RadioGroupDemo = ({ value, id }: any) => {

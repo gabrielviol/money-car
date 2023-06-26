@@ -35,21 +35,25 @@ export const driver = createSlice({
     setCarpoolDay(state, action) {
       const { id, dayInMonth } = action.payload;
       const newDay = { idDriver: id, day: dayInMonth }
-      const updatedCarpool = [...state.carpool, newDay]
-      return { ...state, carpool: updatedCarpool }
+      const existDay = state.carpool.findIndex(day => day.day === dayInMonth)
+
+      if (existDay !== -1) {
+        const updatedCarpool = [...state.carpool]
+        updatedCarpool[existDay] = newDay
+        return { ...state, carpool: updatedCarpool }
+      } else {
+        const updatedCarpool = [...state.carpool, newDay]
+        return { ...state, carpool: updatedCarpool }
+      }
+
     },
-    getAmountDays(state, action) {
-      const driverDays = state.carpool.filter(driver => driver.idDriver === action.payload.id);
-      const amountDays = driverDays.length;
-
+    getAmountDays(state) {
       const updatedDrivers = state.drivers.map(driver => {
-        if (driver.id === action.payload.id) {
-          return { ...driver, days: amountDays };
-        }
-        return driver;
-      });
-
-      return { ...state, drivers: updatedDrivers };
+        const driverDays = state.carpool.filter(Driver => Driver.idDriver === driver.id)
+        const amountDays = driverDays.length
+        return { ...driver, days: amountDays }
+      })
+      return { ...state, drivers: updatedDrivers }
     }
 
   },
@@ -64,5 +68,5 @@ export const driver = createSlice({
 })
 
 export const { setDrivers, setCarpoolDay, getAmountDays } = driver.actions
-export const setDriversState = (state: AppState) => state.drivers.drivers;
-export default driver.reducer;
+export const setDriversState = (state: AppState) => state.drivers.drivers
+export default driver.reducer
