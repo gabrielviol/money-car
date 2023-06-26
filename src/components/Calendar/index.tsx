@@ -3,24 +3,15 @@ import {
   CalendarActions,
   CalendarBody,
   CalendarContainer,
-  CalendarDay,
   CalendarHeader,
-  CalendarTitle,
-  Label,
-  PopoverDay,
-  RadioGroupIndicator,
-  RadioGroupItem,
-  RadioGroupRoot
+  CalendarTitle
 } from "./styles";
 import { useState } from "react";
-import dayjs, { Dayjs } from 'dayjs'
-import { useRouter } from "next/dist/client/router";
+import dayjs from 'dayjs'
 import { getWeekDays } from "@/utils/get-week-days";
 import * as React from 'react';
-import * as Popover from '@radix-ui/react-popover';
-import { Text } from "@ignite-ui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCarpoolDay, setDriversState } from "@/store/reducers/driverReducer";
+import { PopOver } from "../Popover";
+import { useDispatch } from "react-redux";
 
 interface CalendarWeek {
   week: number
@@ -36,6 +27,8 @@ export function Calendar() {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
+
+  const dispatch = useDispatch()
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
@@ -126,35 +119,6 @@ export function Calendar() {
     [],
   )
 
-  const dispatch = useDispatch()
-  const drivers = useSelector(setDriversState)
-  // console.log(daysInMonthArray.map((date) => {
-  //   const dayInMonth = dayjs(date).format('YYYY-MM-DD')
-  //   return {
-  //     dayInMonth
-  //   }
-  // }))
-
-  const handleSetDriver = ({ id }: any, date: Dayjs) => {
-    const dayInMonth = dayjs(date).format('YYYY-MM-DD')
-
-    const props = { id, dayInMonth }
-
-    // dispatch(incrementDay(id))
-    dispatch(setCarpoolDay(props));
-  };
-
-  const RadioGroupDemo = ({ value }: any) => (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <RadioGroupItem value={value}>
-        <RadioGroupIndicator />
-      </RadioGroupItem>
-      <Label>
-        {value.name}
-      </Label>
-    </div>
-  )
-
   return (
     <CalendarContainer>
       <CalendarHeader>
@@ -183,29 +147,11 @@ export function Calendar() {
             return (
               <tr key={week}>
                 {days.map(({ date, disabled }) => {
+
                   return (
                     <td key={date.toString()}>
-                      <Popover.Root>
-                        <CalendarDay disabled={disabled}>{date.get('date')}</CalendarDay>
-                        <Popover.Portal>
-                          <PopoverDay>
-                            <form>
-                              <RadioGroupRoot
-                                aria-label="View density"
-                                onValueChange={(props) => handleSetDriver(props, date)}
-                              >
-                                <Text>Quem Levou?</Text>
-                                {drivers.map(driver => {
-                                  return <RadioGroupDemo key={driver.id} value={driver} />
-                                })}
-                              </RadioGroupRoot>
-                            </form>
-                            <Popover.Arrow />
-                          </PopoverDay>
-                        </Popover.Portal>
-                      </Popover.Root>
+                      <PopOver date={date} disabled={disabled} />
                     </td>
-
                   )
                 })}
               </tr>
