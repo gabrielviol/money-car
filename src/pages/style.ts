@@ -9,7 +9,7 @@ export const Container = styled('div', {
   justifyContent: 'center',
   border: '1px solid white',
   borderRadius: '$sm',
-  gap: '1rem'
+  gap: '5rem'
 })
 
 export const Content = styled(Box, {
@@ -38,14 +38,28 @@ export const Content = styled(Box, {
 
 export const TableUsers = styled('table', {
   fontFamily: '$default',
-  borderSpacing: '0.25rem',
-  tableLayout: 'fixed',
-  backgroundColor: '#333',
+  padding: '2rem 2rem',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+  border: '1px solid white',
+  background: '$gray800',
+  borderCollapse: 'collapse',
+  'thead': {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+
+  'tr': {
+    display: 'flex',
+    justifyContent: 'end',
+    gap: '2rem',
+    borderBottom: '1px solid #dddddd'
+  },
 
   'tbody': {
     display: 'flex',
     flexDirection: 'column',
-    boxSizing: 'border-box',
-    gap: '1rem',
+    gap: '1rem'
   }
 })

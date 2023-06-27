@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCarpoolDay, setDriversState } from '@/store/reducers/driverReducer';
 import dayjs from 'dayjs';
 import { Text } from '@ignite-ui/react';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 
 export function PopOver({ date, disabled }: any) {
-  const [driverId, setDriverId] = useState('')
-  const [driverName, setDriverName] = useState('')
+  const [driverId, setDriverId] = useState('default')
   const dispatch = useDispatch()
   const drivers = useSelector(setDriversState)
 
@@ -42,6 +41,7 @@ export function PopOver({ date, disabled }: any) {
             <RadioGroupRoot
               aria-label="View density"
               value={driverId}
+              defaultValue={driverId}
               onValueChange={(props) => handleSetDriver(props)}
             >
               <Text>Quem Levou?</Text>

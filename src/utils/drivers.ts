@@ -10,7 +10,7 @@ export const StaticDrivers = [
     days: 0
   },
   {
-    id: 'ASD789',
+    id: 'default',
     name: 'Ninguém',
     days: 0
   }

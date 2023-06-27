@@ -23,7 +23,21 @@ export const CalendarDay = styled((Popover.Trigger), {
 
   '&:focus': {
     boxShadow: '0 0 0 2px $color$gray100'
-  }
+  },
+  variants: {
+    selectedDriver: {
+      'default': {
+        background: 'blue',
+      },
+      'motorista-2': {
+        background: 'green',
+      },
+      'motorista-3': {
+        background: 'red',
+      },
+
+    }
+  },
 })
 
 export const PopoverDay = styled((Popover.Content), {

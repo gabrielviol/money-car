@@ -65,14 +65,6 @@ export const driver = createSlice({
       })
       return { ...state, drivers: updatedDrivers }
     }
-  },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.product,
-      }
-    }
   }
 })
 
