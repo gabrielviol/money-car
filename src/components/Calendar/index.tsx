@@ -6,12 +6,13 @@ import {
   CalendarHeader,
   CalendarTitle
 } from "./styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from 'dayjs'
 import { getWeekDays } from "@/utils/get-week-days";
 import * as React from 'react';
 import { PopOver } from "../Popover";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAmountDays, setCarpoolState, setCurrentMonth } from "@/store/reducers/driverReducer";
 
 interface CalendarWeek {
   week: number
@@ -28,21 +29,28 @@ export function Calendar() {
     return dayjs().set('date', 1)
   })
 
+  const carpool = useSelector(setCarpoolState)
   const dispatch = useDispatch()
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  useEffect(() => {
+    dispatch(setCurrentMonth(currentMonthNumber))
+    dispatch(getAmountDays())
+    console.log('currentDate mudou ')
+  }, [currentDate, carpool])
 
-  const isDateSelected = !!selectedDate
+  // const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
+  // const isDateSelected = !!selectedDate
 
-  const describeDate = selectedDate
-    ? dayjs(selectedDate).format('DD[ de ]MMMM')
-    : null
+  // const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
 
-  const selectedDateWithoutTime = selectedDate
-    ? dayjs(selectedDate).format('YYYY-MM-DD')
-    : null
+  // const describeDate = selectedDate
+  //   ? dayjs(selectedDate).format('DD[ de ]MMMM')
+  //   : null
+
+  // const selectedDateWithoutTime = selectedDate
+  //   ? dayjs(selectedDate).format('YYYY-MM-DD')
+  //   : null
 
   function handlePreviousMonth() {
     const previousMonthDate = currentDate.subtract(1, 'month')
@@ -58,7 +66,9 @@ export function Calendar() {
   const shortWeekDays = getWeekDays({ short: true })
 
   const currentMonth = currentDate.format('MMMM')
+  const currentMonthNumber = currentDate.format('MM')
   const currentYear = currentDate.format('YYYY')
+
   const daysInMonthArray = Array.from({
     length: currentDate.daysInMonth(),
   }).map((_, i) => {
@@ -118,6 +128,8 @@ export function Calendar() {
     },
     [],
   )
+
+
 
   return (
     <CalendarContainer>

@@ -8,11 +8,7 @@ import { useEffect } from "react";
 export default function Home() {
   const dispatch = useDispatch()
   const drivers = useSelector(setDriversState)
-  const carpool = useSelector(setCarpoolState)
 
-  useEffect(() => {
-    dispatch(getAmountDays())
-  }, [carpool])
 
   return (
     <Container>

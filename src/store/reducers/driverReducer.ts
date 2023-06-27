@@ -17,11 +17,13 @@ interface Carpool {
 interface CarpoolState {
   drivers: Driver[]
   carpool: Carpool[]
+  currentMonth: string
 }
 
 const initialState: CarpoolState = {
   drivers: StaticDrivers,
-  carpool: []
+  carpool: [],
+  currentMonth: '00'
 }
 
 export const driver = createSlice({
@@ -30,6 +32,9 @@ export const driver = createSlice({
   reducers: {
     setDrivers(state, action) {
       state.drivers = action.payload
+    },
+    setCurrentMonth(state, action) {
+      state.currentMonth = action.payload
     },
     setCarpoolDay(state, action) {
       const { id, dayInMonth } = action.payload;
@@ -48,7 +53,13 @@ export const driver = createSlice({
     },
     getAmountDays(state) {
       const updatedDrivers = state.drivers.map(driver => {
-        const driverDays = state.carpool.filter(Driver => Driver.idDriver === driver.id)
+        const currentMonth = state.carpool.filter(carpool => {
+          const mes = carpool.day.slice(5, 7)
+          if (mes === state.currentMonth) {
+            return carpool
+          }
+        })
+        const driverDays = currentMonth.filter(Driver => Driver.idDriver === driver.id)
         const amountDays = driverDays.length
         return { ...driver, days: amountDays }
       })
@@ -65,7 +76,7 @@ export const driver = createSlice({
   }
 })
 
-export const { setDrivers, setCarpoolDay, getAmountDays } = driver.actions
+export const { setDrivers, setCarpoolDay, getAmountDays, setCurrentMonth } = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers
 export const setCarpoolState = (state: AppState) => state.drivers.carpool
 export default driver.reducer

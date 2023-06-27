@@ -13,17 +13,14 @@ export function PopOver({ date, disabled }: any) {
   const drivers = useSelector(setDriversState)
 
   const handleSetDriver = (id: any) => {
-    setDriverId(id)
     const dayInMonth = dayjs(date).format('YYYY-MM-DD')
-
     const props = { id, dayInMonth }
 
+    setDriverId(id)
     dispatch(setCarpoolDay(props))
   };
 
   const RadioGroupDemo = ({ value, id }: any) => {
-    setDriverName(value.name)
-
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <RadioGroupItem value={id} id={id}>
@@ -46,7 +43,6 @@ export function PopOver({ date, disabled }: any) {
               aria-label="View density"
               value={driverId}
               onValueChange={(props) => handleSetDriver(props)}
-
             >
               <Text>Quem Levou?</Text>
               {drivers.map(driver => {
