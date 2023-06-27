@@ -1,11 +1,19 @@
 import { Calendar } from "@/components/Calendar";
 import { Container, Content, TableUsers } from "./style";
 import { Text } from "@ignite-ui/react";
-import { useSelector } from "react-redux";
-import { setDriversState } from "@/store/reducers/driverReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { getAmountDays, setCarpoolState, setDriversState } from "@/store/reducers/driverReducer";
+import { useEffect } from "react";
 
 export default function Home() {
+  const dispatch = useDispatch()
   const drivers = useSelector(setDriversState)
+  const carpool = useSelector(setCarpoolState)
+
+  useEffect(() => {
+    dispatch(getAmountDays())
+  }, [carpool])
+
   return (
     <Container>
       <Content>

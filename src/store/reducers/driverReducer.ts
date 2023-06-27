@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppState } from '..';
 import { HYDRATE } from 'next-redux-wrapper'
 import { StaticDrivers } from '@/utils/drivers';
-import { stat } from 'fs';
 
 interface Driver {
   id: string;
@@ -55,7 +54,6 @@ export const driver = createSlice({
       })
       return { ...state, drivers: updatedDrivers }
     }
-
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -69,4 +67,5 @@ export const driver = createSlice({
 
 export const { setDrivers, setCarpoolDay, getAmountDays } = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers
+export const setCarpoolState = (state: AppState) => state.drivers.carpool
 export default driver.reducer

@@ -1,13 +1,14 @@
 import * as Popover from '@radix-ui/react-popover'
 import { CalendarDay, Label, PopoverDay, RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from './styles'
 import { useDispatch, useSelector } from 'react-redux';
-import { getAmountDays, setCarpoolDay, setDriversState } from '@/store/reducers/driverReducer';
-import dayjs, { Dayjs } from 'dayjs';
+import { setCarpoolDay, setDriversState } from '@/store/reducers/driverReducer';
+import dayjs from 'dayjs';
 import { Text } from '@ignite-ui/react';
 import { useState } from 'react';
 
 export function PopOver({ date, disabled }: any) {
   const [driverId, setDriverId] = useState('')
+  const [driverName, setDriverName] = useState('')
   const dispatch = useDispatch()
   const drivers = useSelector(setDriversState)
 
@@ -18,10 +19,11 @@ export function PopOver({ date, disabled }: any) {
     const props = { id, dayInMonth }
 
     dispatch(setCarpoolDay(props))
-    dispatch(getAmountDays({ id }))
   };
 
   const RadioGroupDemo = ({ value, id }: any) => {
+    setDriverName(value.name)
+
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <RadioGroupItem value={id} id={id}>
@@ -38,12 +40,13 @@ export function PopOver({ date, disabled }: any) {
     <Popover.Root>
       <CalendarDay disabled={disabled}>{date.get('date')}</CalendarDay>
       <Popover.Portal>
-        <PopoverDay>
+        <PopoverDay >
           <form>
             <RadioGroupRoot
               aria-label="View density"
               value={driverId}
               onValueChange={(props) => handleSetDriver(props)}
+
             >
               <Text>Quem Levou?</Text>
               {drivers.map(driver => {
