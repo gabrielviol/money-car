@@ -1,50 +1,107 @@
 import { Calendar } from "@/components/Calendar";
-import { Container, Content, TableUsers } from "./style";
-import { Text } from "@ignite-ui/react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAmountDays, setCarpoolState, setDriversState } from "@/store/reducers/driverReducer";
-import { useEffect } from "react";
+import { setDriversState } from "@/store/reducers/driverReducer";
+
+import {
+  Button,
+  Caption,
+  Container,
+  Content,
+  ContentValueForDay,
+  DriversDash,
+  Input,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Value,
+  Wrapper
+} from "./style";
 
 export default function Home() {
-  const dispatch = useDispatch()
   const drivers = useSelector(setDriversState)
 
+  const DriversTable = () => {
+    return (
+      <Table>
+        <Caption>Motoristas</Caption>
+        <TableHead>
+          <tr>
+            <TableHeader>Motorista</TableHeader>
+            <TableHeader>Dias</TableHeader>
+            <TableHeader>Total</TableHeader>
+          </tr>
+        </TableHead>
+        <TableBody>
+          {drivers.map((driver) => {
+            return (
+              <TableRow key={driver.id}>
+                <TableCell>{driver.name}</TableCell>
+                <TableCell>{driver.days}</TableCell>
+                <TableCell>R$ 500,00</TableCell>
+              </TableRow>
+            )
+          })}
+
+        </TableBody>
+      </Table>
+    );
+  }
+
+  const ValueForDay = () => {
+    const [value, setValue] = useState(10)
+    const [isActive, setIsActive] = useState(false)
+    const [newValue, setNewValue] = useState('')
+
+    const alterarValor = () => {
+      const newValueFloat = parseFloat(newValue);
+      if (!isNaN(newValueFloat) && newValueFloat > 0) {
+        setValue(newValueFloat);
+        setNewValue('')
+        setIsActive(false)
+      }
+    }
+
+    return (
+      <ContentValueForDay>
+        <span>Valor Diário</span>
+        <Wrapper>
+          <Value>{value}R$</Value>
+          {isActive ? (
+            <>
+              <Input
+                type="text"
+                value={newValue}
+                onChange={(e) => setNewValue(e.target.value)}
+              />
+              <Button onClick={alterarValor}>
+                Salvar
+              </Button>
+            </>
+          ) :
+            (
+              <Button onClick={() => setIsActive(true)}>
+                Alterar
+              </Button>
+            )}
+        </Wrapper>
+      </ContentValueForDay>
+    );
+  }
 
   return (
     <Container>
       <Content>
         <Calendar />
       </Content>
-      <div>
-        <TableUsers>
-          <tr>
-            <th>
-            </th>
-            <th>
-              <span>Dias</span>
-            </th>
-            <th>
-              <span>Total</span>
-            </th>
-          </tr>
-          <tbody>
-            {drivers.map((driver) => {
-              return (
-                <tr key={driver.id}>
-                  <td><Text>{driver.name}</Text></td>
-                  <td><Text>{driver.days} </Text></td>
-                  <td><Text>10R$</Text></td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </TableUsers>
-        <div>
-          <label htmlFor="">Valor diario</label>
-          <input type="text" />
-          <button>Salvar</button>
-        </div>
-      </div>
+      <DriversDash>
+        <DriversTable />
+        <ValueForDay />
+      </DriversDash>
+
     </Container>
   )
 }
