@@ -1,7 +1,7 @@
 import { Calendar } from "@/components/Calendar";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDriversState } from "@/store/reducers/driverReducer";
+import { CarpoolState, getAmountDays, setDriversState, setValueForDay } from "@/store/reducers/driverReducer";
 
 import {
   Button,
@@ -23,6 +23,8 @@ import {
 
 export default function Home() {
   const drivers = useSelector(setDriversState)
+  const { valueForDay } = useSelector(CarpoolState)
+  const dispatch = useDispatch()
 
   const DriversTable = () => {
     return (
@@ -41,7 +43,7 @@ export default function Home() {
               <TableRow key={driver.id}>
                 <TableCell>{driver.name}</TableCell>
                 <TableCell>{driver.days}</TableCell>
-                <TableCell>R$ 500,00</TableCell>
+                <TableCell>R$ {driver.total}</TableCell>
               </TableRow>
             )
           })}
@@ -52,14 +54,17 @@ export default function Home() {
   }
 
   const ValueForDay = () => {
-    const [value, setValue] = useState(10)
     const [isActive, setIsActive] = useState(false)
     const [newValue, setNewValue] = useState('')
 
     const alterarValor = () => {
       const newValueFloat = parseFloat(newValue);
       if (!isNaN(newValueFloat) && newValueFloat > 0) {
-        setValue(newValueFloat);
+        dispatch(setValueForDay(newValueFloat))
+        dispatch(getAmountDays())
+        setNewValue('')
+        setIsActive(false)
+      } else {
         setNewValue('')
         setIsActive(false)
       }
@@ -69,7 +74,7 @@ export default function Home() {
       <ContentValueForDay>
         <span>Valor Diário</span>
         <Wrapper>
-          <Value>{value}R$</Value>
+          <Value>R${valueForDay}</Value>
           {isActive ? (
             <>
               <Input
@@ -101,7 +106,6 @@ export default function Home() {
         <DriversTable />
         <ValueForDay />
       </DriversDash>
-
     </Container>
   )
 }
