@@ -1,18 +1,18 @@
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react"
 import {
   CalendarActions,
   CalendarBody,
   CalendarContainer,
   CalendarHeader,
   CalendarTitle
-} from "./styles";
-import { useState, useEffect } from "react";
+} from "./styles"
+import { useState, useEffect } from "react"
 import dayjs from 'dayjs'
-import { getWeekDays } from "@/utils/get-week-days";
-import * as React from 'react';
-import { PopOver } from "../Popover";
-import { useDispatch, useSelector } from "react-redux";
-import { getAmountDays, setCarpoolState, setCurrentMonth } from "@/store/reducers/driverReducer";
+import { getWeekDays } from "@/utils/get-week-days"
+import * as React from 'react'
+import { PopOver } from "../Popover"
+import { useDispatch, useSelector } from "react-redux"
+import { getAmountDays, setCarpoolState, setCurrentMonth } from "@/store/reducers/driverReducer"
 
 interface CalendarWeek {
   week: number
@@ -35,7 +35,6 @@ export function Calendar() {
   useEffect(() => {
     dispatch(setCurrentMonth(currentMonthNumber))
     dispatch(getAmountDays())
-    console.log('currentDate mudou ')
   }, [currentDate, carpool])
 
   // const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -159,7 +158,6 @@ export function Calendar() {
             return (
               <tr key={week}>
                 {days.map(({ date, disabled }) => {
-
                   return (
                     <td key={date.toString()}>
                       <PopOver date={date} disabled={disabled} />

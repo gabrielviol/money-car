@@ -1,16 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { AppState } from '..';
-import { StaticDrivers } from '@/utils/drivers';
+import { createSlice } from '@reduxjs/toolkit'
+import { AppState } from '..'
+import { StaticDrivers } from '@/utils/drivers'
 
 interface Driver {
-  id: string;
-  name: string;
-  days: number;
+  id: string
+  name: string
+  days: number
   total: number
 }
 
 interface Carpool {
-  idDriver: string;
+  idDriver: string
   day: string
 }
 
@@ -18,14 +18,16 @@ interface CarpoolState {
   drivers: Driver[]
   carpool: Carpool[]
   currentMonth: string,
-  valueForDay: number;
+  valueForDay: number
+  driverSelected: string
 }
 
 const initialState: CarpoolState = {
   drivers: StaticDrivers,
   carpool: [],
   currentMonth: '00',
-  valueForDay: 10
+  valueForDay: 10,
+  driverSelected: 'default'
 }
 
 export const driver = createSlice({
@@ -42,7 +44,7 @@ export const driver = createSlice({
       state.valueForDay = action.payload
     },
     setCarpoolDay(state, action) {
-      const { id, dayInMonth } = action.payload;
+      const { id, dayInMonth } = action.payload
       const newDay = { idDriver: id, day: dayInMonth }
       const existDay = state.carpool.findIndex(day => day.day === dayInMonth)
 
@@ -54,7 +56,6 @@ export const driver = createSlice({
         const updatedCarpool = [...state.carpool, newDay]
         return { ...state, carpool: updatedCarpool }
       }
-
     },
     getAmountDays(state) {
       const updatedDrivers = state.drivers.map(driver => {
@@ -74,7 +75,7 @@ export const driver = createSlice({
   }
 })
 
-export const { setDrivers, setCarpoolDay, getAmountDays, setCurrentMonth, setValueForDay } = driver.actions
+export const { setDrivers, setCarpoolDay, getAmountDays, setCurrentMonth, setValueForDay, } = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers
 export const setCarpoolState = (state: AppState) => state.drivers.carpool
 export const CarpoolState = (state: AppState) => state.drivers

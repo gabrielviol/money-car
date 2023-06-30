@@ -1,28 +1,32 @@
 import * as Popover from '@radix-ui/react-popover'
 import { CalendarDay, Label, PopoverDay, RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from './styles'
-import { useDispatch, useSelector } from 'react-redux';
-import { setCarpoolDay, setDriversState } from '@/store/reducers/driverReducer';
-import dayjs from 'dayjs';
-import { Text } from '@ignite-ui/react';
-import { CSSProperties, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { setCarpoolDay, setCarpoolState, setDriversState } from '@/store/reducers/driverReducer'
+import dayjs from 'dayjs'
+import { Text } from '@ignite-ui/react'
+import { useState } from 'react'
 
 export function PopOver({ date, disabled }: any) {
-  const [driverId, setDriverId] = useState('default')
   const dispatch = useDispatch()
+  const carpool = useSelector(setCarpoolState)
   const drivers = useSelector(setDriversState)
+  const dayInMonth = dayjs(date).format('YYYY-MM-DD')
+
+  const [driverId, setDriverId] = useState(() => {
+    const carpoolItem = carpool.find((item) => item.day === dayInMonth)
+    return carpoolItem ? carpoolItem.idDriver : 'default'
+  })
 
   const handleSetDriver = (id: any) => {
-    const dayInMonth = dayjs(date).format('YYYY-MM-DD')
     const props = { id, dayInMonth }
-
     setDriverId(id)
     dispatch(setCarpoolDay(props))
-  };
+  }
 
-  const RadioGroupDemo = ({ value, id }: any) => {
+  const RadioGroupDemo = ({ value }: any) => {
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <RadioGroupItem value={id} id={id}>
+        <RadioGroupItem value={value.id} id={value.id} >
           <RadioGroupIndicator />
         </RadioGroupItem>
         <Label>
@@ -46,7 +50,7 @@ export function PopOver({ date, disabled }: any) {
             >
               <Text>Quem Levou?</Text>
               {drivers.map(driver => {
-                return <RadioGroupDemo key={driver.id} value={driver} id={driver.id} />
+                return <RadioGroupDemo key={driver.id} value={driver} />
               })}
             </RadioGroupRoot>
           </form>

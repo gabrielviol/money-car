@@ -1,7 +1,7 @@
-import { Calendar } from "@/components/Calendar";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { CarpoolState, getAmountDays, setDriversState, setValueForDay } from "@/store/reducers/driverReducer";
+import { Calendar } from "@/components/Calendar"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { CarpoolState, getAmountDays, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
 
 import {
   Button,
@@ -19,7 +19,7 @@ import {
   TableRow,
   Value,
   Wrapper
-} from "./style";
+} from "./style"
 
 export default function Home() {
   const drivers = useSelector(setDriversState)
@@ -50,7 +50,7 @@ export default function Home() {
 
         </TableBody>
       </Table>
-    );
+    )
   }
 
   const ValueForDay = () => {
@@ -58,7 +58,7 @@ export default function Home() {
     const [newValue, setNewValue] = useState('')
 
     const alterarValor = () => {
-      const newValueFloat = parseFloat(newValue);
+      const newValueFloat = parseFloat(newValue)
       if (!isNaN(newValueFloat) && newValueFloat > 0) {
         dispatch(setValueForDay(newValueFloat))
         dispatch(getAmountDays())
@@ -94,7 +94,7 @@ export default function Home() {
             )}
         </Wrapper>
       </ContentValueForDay>
-    );
+    )
   }
 
   return (

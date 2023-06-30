@@ -27,13 +27,13 @@ export const CalendarDay = styled((Popover.Trigger), {
   variants: {
     selectedDriver: {
       'default': {
-        background: 'blue',
+        background: '$gray600',
       },
-      'motorista-2': {
+      'Gabriel': {
         background: 'green',
       },
-      'motorista-3': {
-        background: 'red',
+      'Rebecca': {
+        background: 'pink',
       },
 
     }
