@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Driver {
+  id    String @id @default(uuid())
+  name  String @unique
+  days  Int
+  total Int
+
+  @@map("drivers")
+}
+
+model Carpool {
+  idDriver String @id
+  day      String
+
+  @@map("carpool")
+}

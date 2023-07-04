@@ -1,5 +1,5 @@
 import { Calendar } from "@/components/Calendar"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { CarpoolState, getAmountDays, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
 
@@ -20,8 +20,10 @@ import {
   Value,
   Wrapper
 } from "./style"
+import { api } from "@/lib/axios"
 
 export default function Home() {
+  const valueNewDriver = useRef<HTMLInputElement | null>(null)
   const drivers = useSelector(setDriversState)
   const { valueForDay } = useSelector(CarpoolState)
   const dispatch = useDispatch()
@@ -97,12 +99,31 @@ export default function Home() {
     )
   }
 
+  async function handleAddNewDriver(e: any) {
+    e.preventDefault()
+    if (valueNewDriver.current) {
+      const valueDriver = valueNewDriver.current.value
+      try {
+        await api.post('drivers', {
+          name: valueDriver
+        })
+      } catch (err) {
+        console.log(err)
+      }
+      valueNewDriver.current.value = ''
+    }
+  }
+
   return (
     <Container>
       <Content>
         <Calendar />
       </Content>
       <DriversDash>
+        <form onSubmit={(e) => handleAddNewDriver(e)}>
+          <input type="text" placeholder="Nome..." ref={valueNewDriver} />
+          <Button type="submit">Add driver</Button>
+        </form>
         <DriversTable />
         <ValueForDay />
       </DriversDash>
