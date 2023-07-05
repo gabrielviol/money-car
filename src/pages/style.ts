@@ -1,4 +1,5 @@
 import { Box, styled } from "@ignite-ui/react";
+import * as Popover from '@radix-ui/react-popover';
 
 export const Container = styled('div', {
   width: '80%',
@@ -50,11 +51,11 @@ export const Caption = styled('caption', {
   fontWeight: 'bold',
   marginBottom: '10px',
   paddingTop: '5px',
-  borderTop: '1px solid #ddd',
+  borderTop: '1px solid #ddd'
 });
 
 export const TableHead = styled('thead', {
-  backgroundColor: '#373737',
+  backgroundColor: '$gray600'
 });
 
 export const TableHeader = styled('th', {
@@ -63,18 +64,88 @@ export const TableHeader = styled('th', {
   borderBottom: '1px solid #ddd',
 });
 
-export const TableBody = styled('tbody', {});
+export const TableBody = styled('tbody', {
+});
 
 export const TableRow = styled('tr', {
   '&:nth-of-type(even)': {
-    backgroundColor: '#373737'
+    backgroundColor: '$gray600',
   },
+  '&:hover': {
+    background: '$gray500',
+  }
 });
 
 export const TableCell = styled('td', {
   padding: '10px 5px',
   borderBottom: '1px solid #ddd',
 });
+
+export const PopoverTrigger = styled(Popover.Trigger, {
+  'button': {
+    background: '$gray900',
+    position: 'absolute',
+    marginTop: '-1.5rem',
+    marginLeft: '1rem',
+    padding: '5px',
+    cursor: 'pointer',
+    'svg': {
+      color: '#3498db',
+    }
+  }
+})
+export const PopoverContent = styled(Popover.Content, {
+  borderRadius: '4px',
+  padding: '20px',
+  width: '220px',
+  backgroundColor: 'white',
+  willChange: 'transform, opacity',
+  'div': {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'black',
+    'span': {
+      marginBottom: '10px',
+    },
+    'div': {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: '1rem',
+    },
+    'button': {
+      border: 'none',
+      background: '$gray600',
+      color: 'white',
+      padding: '5px 10px',
+      borderRadius: '5px',
+      cursor: 'pointer'
+    },
+    'button:hover': {
+      background: '$gray500',
+    }
+  }
+})
+export const PopoverClose = styled(Popover.Close, {
+  fontFamily: 'inherit',
+  borderRadius: '100%',
+  height: '25px',
+  width: '25px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '$gray500',
+  position: 'absolute',
+  top: '5px',
+  right: '5px',
+  '&:hover': {
+    color: 'black'
+  },
+  '&:focus': {
+    boxShadow: '0 0 0 2px black'
+  }
+})
 
 export const ContentValueForDay = styled('div', {
   display: 'flex',

@@ -10,8 +10,8 @@ datasource db {
 model Driver {
   id    String @id @default(uuid())
   name  String @unique
-  days  Int
-  total Int
+  days  Int    @default(0)
+  total Int    @default(0)
 
   @@map("drivers")
 }

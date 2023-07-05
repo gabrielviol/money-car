@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { AppState } from '..'
 import { StaticDrivers } from '@/utils/drivers'
 
+
 interface Driver {
   id: string
   name: string
@@ -30,12 +31,37 @@ const initialState: CarpoolState = {
   driverSelected: 'default'
 }
 
+
+
 export const driver = createSlice({
   name: 'driver',
   initialState,
   reducers: {
-    setDrivers(state, action) {
-      state.drivers = action.payload
+    addNewDriver(state, action) {
+      // try {
+      //   await api.post('/drivers', {
+      //     name: valueDriver
+      //   })
+      // } catch (err) {
+      //   if (err instanceof AxiosError && err.response?.data?.message) {
+      //     alert(err.response.data.message)
+      //     return
+      //   }
+      //   console.log(err)
+      // }
+      state.drivers = [
+        ...state.drivers,
+        {
+          id: action.payload.id,
+          name: action.payload.name,
+          days: 0,
+          total: 0
+        }
+      ]
+    },
+    removeDriver(state, action) {
+      const newDrivers = state.drivers.filter(driver => driver.id !== action.payload)
+      return { ...state, drivers: newDrivers }
     },
     setCurrentMonth(state, action) {
       state.currentMonth = action.payload
@@ -75,7 +101,14 @@ export const driver = createSlice({
   }
 })
 
-export const { setDrivers, setCarpoolDay, getAmountDays, setCurrentMonth, setValueForDay, } = driver.actions
+export const {
+  setCarpoolDay,
+  getAmountDays,
+  setCurrentMonth,
+  setValueForDay,
+  addNewDriver,
+  removeDriver
+} = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers
 export const setCarpoolState = (state: AppState) => state.drivers.carpool
 export const CarpoolState = (state: AppState) => state.drivers
