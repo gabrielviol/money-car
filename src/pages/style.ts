@@ -82,7 +82,7 @@ export const TableCell = styled('td', {
 });
 
 export const PopoverTrigger = styled(Popover.Trigger, {
-  'button': {
+  'span': {
     background: '$gray900',
     position: 'absolute',
     marginTop: '-1.5rem',
@@ -153,6 +153,21 @@ export const ContentValueForDay = styled('div', {
   gap: '1rem',
   'span': {
     fontSize: '22px',
+  }
+})
+
+export const ContentAddNewDriver = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+  'span': {
+    fontSize: '22px',
+  },
+  'form': {
+    display: 'flex'
+  },
+  'input': {
+    width: '105px'
   }
 })
 

@@ -24,31 +24,18 @@ interface CarpoolState {
 }
 
 const initialState: CarpoolState = {
-  drivers: StaticDrivers,
+  drivers: [],
   carpool: [],
   currentMonth: '00',
   valueForDay: 10,
   driverSelected: 'default'
 }
 
-
-
 export const driver = createSlice({
   name: 'driver',
   initialState,
   reducers: {
     addNewDriver(state, action) {
-      // try {
-      //   await api.post('/drivers', {
-      //     name: valueDriver
-      //   })
-      // } catch (err) {
-      //   if (err instanceof AxiosError && err.response?.data?.message) {
-      //     alert(err.response.data.message)
-      //     return
-      //   }
-      //   console.log(err)
-      // }
       state.drivers = [
         ...state.drivers,
         {
@@ -65,6 +52,9 @@ export const driver = createSlice({
     },
     setCurrentMonth(state, action) {
       state.currentMonth = action.payload
+    },
+    setDrivers(state, action) {
+      state.drivers = action.payload
     },
     setValueForDay(state, action) {
       state.valueForDay = action.payload
@@ -107,7 +97,8 @@ export const {
   setCurrentMonth,
   setValueForDay,
   addNewDriver,
-  removeDriver
+  removeDriver,
+  setDrivers
 } = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers
 export const setCarpoolState = (state: AppState) => state.drivers.carpool

@@ -1,7 +1,7 @@
 import { Calendar } from "@/components/Calendar"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
+import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setDrivers, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
 import { v4 as uuidv4 } from 'uuid';
 import { Trash, X } from "@phosphor-icons/react"
 import * as Popover from '@radix-ui/react-popover';
@@ -10,6 +10,7 @@ import {
   Caption,
   Container,
   Content,
+  ContentAddNewDriver,
   ContentValueForDay,
   DriversDash,
   Input,
@@ -25,11 +26,29 @@ import {
   Value,
   Wrapper
 } from "./style"
+import { api } from "@/lib/axios";
+import { AxiosError } from "axios";
 
 export default function Home() {
   const drivers = useSelector(setDriversState)
   const { valueForDay } = useSelector(CarpoolState)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const response = await api.get('/getDrivers');
+        const drivers = response.data;
+        dispatch(setDrivers(drivers))
+        console.log(drivers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDrivers();
+  }, []);
+
 
   const DriversTable = () => {
     const [highlightedDriverId, setHighlightedDriverId] = useState(null)
@@ -61,7 +80,7 @@ export default function Home() {
           </tr>
         </TableHead>
         <TableBody>
-          {drivers.map((driver) => {
+          {drivers.filter(driver => driver.id !== "default").map((driver) => {
             return (
               <TableRow
                 key={driver.id}
@@ -76,19 +95,19 @@ export default function Home() {
                     <PopoverTrigger>
                       {
                         driver.id === highlightedDriverId && showDeleteBox ?
-                          <button>
-                            <Trash size={32} weight="bold" />
-                          </button> :
+                          <span>
+                            <Trash size={24} weight="bold" />
+                          </span> :
                           null
                       }
                     </PopoverTrigger>
                     <Popover.Portal>
                       <PopoverContent >
                         <div>
-                          <span>Tem certeza?</span>
+                          <span>Remover {driver.name}?</span>
                           <div>
                             <button onClick={() => handleRemoveDriver(driver.id)}>Sim</button>
-                            <button onClick={() => { }}>Não</button>
+                            <button onClick={() => handleRemoveDriver(null)}>Não</button>
                           </div>
                         </div>
                         <PopoverClose>
@@ -156,7 +175,7 @@ export default function Home() {
     const [isActive, setIsActive] = useState(false)
     const [newDriver, setNewDriver] = useState('')
 
-    const handleAddNewDriver = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleAddNewDriver = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
       if (newDriver.trim() === '' || newDriver.startsWith(' ')) {
@@ -165,6 +184,18 @@ export default function Home() {
         setIsActive(false)
       } else {
         const randomId = uuidv4()
+        try {
+          await api.post('/postDriver', {
+            name: newDriver,
+            id: randomId
+          })
+        } catch (err) {
+          if (err instanceof AxiosError && err.response?.data?.message) {
+            alert(err.response.data.message)
+            return
+          }
+          console.log(err)
+        }
         dispatch(addNewDriver({ name: newDriver, id: randomId }))
         console.log(drivers)
         setNewDriver('')
@@ -173,13 +204,14 @@ export default function Home() {
     }
 
     return (
-      <ContentValueForDay>
+      <ContentAddNewDriver>
         <Wrapper>
           {isActive ? (
             <>
               <form onSubmit={(e) => handleAddNewDriver(e)}>
                 <Input
                   type="text"
+                  width={500}
                   value={newDriver}
                   onChange={(e) => setNewDriver(e.target.value)}
                 />
@@ -193,7 +225,7 @@ export default function Home() {
               </Button>
             )}
         </Wrapper>
-      </ContentValueForDay>
+      </ContentAddNewDriver>
     )
   }
 
