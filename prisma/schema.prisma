@@ -8,17 +8,20 @@ datasource db {
 }
 
 model Driver {
-  id    String @id @default(uuid())
-  name  String @unique
-  days  Int    @default(0)
-  total Int    @default(0)
+  id      String    @id @default(uuid())
+  name    String    @unique
+  days    Int       @default(0)
+  total   Int       @default(0)
+  Carpool Carpool[]
 
   @@map("drivers")
 }
 
 model Carpool {
-  idDriver String @id
-  day      String
+  idDriver String
+  day      String @unique
+
+  driver Driver @relation(fields: [idDriver], references: [id])
 
   @@map("carpool")
 }

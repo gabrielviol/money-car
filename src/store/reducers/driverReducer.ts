@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { AppState } from '..'
-import { StaticDrivers } from '@/utils/drivers'
-
 
 interface Driver {
   id: string
@@ -23,10 +21,11 @@ interface CarpoolState {
   driverSelected: string
 }
 
+
 const initialState: CarpoolState = {
   drivers: [],
   carpool: [],
-  currentMonth: '00',
+  currentMonth: '',
   valueForDay: 10,
   driverSelected: 'default'
 }
@@ -55,6 +54,9 @@ export const driver = createSlice({
     },
     setDrivers(state, action) {
       state.drivers = action.payload
+    },
+    setCarpool(state, action) {
+      state.carpool = action.payload
     },
     setValueForDay(state, action) {
       state.valueForDay = action.payload
@@ -98,7 +100,8 @@ export const {
   setValueForDay,
   addNewDriver,
   removeDriver,
-  setDrivers
+  setDrivers,
+  setCarpool
 } = driver.actions
 export const setDriversState = (state: AppState) => state.drivers.drivers
 export const setCarpoolState = (state: AppState) => state.drivers.carpool

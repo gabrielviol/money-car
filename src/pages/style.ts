@@ -83,11 +83,14 @@ export const TableCell = styled('td', {
 
 export const PopoverTrigger = styled(Popover.Trigger, {
   'span': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     background: '$gray900',
     position: 'absolute',
     marginTop: '-1.5rem',
-    marginLeft: '1rem',
-    padding: '5px',
+    marginLeft: '0.9rem',
+    padding: '10px',
     cursor: 'pointer',
     'svg': {
       color: '#3498db',

@@ -35,21 +35,7 @@ export function Calendar() {
   useEffect(() => {
     dispatch(setCurrentMonth(currentMonthNumber))
     dispatch(getAmountDays())
-  }, [currentDate, carpool])
-
-  // const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-
-  // const isDateSelected = !!selectedDate
-
-  // const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
-
-  // const describeDate = selectedDate
-  //   ? dayjs(selectedDate).format('DD[ de ]MMMM')
-  //   : null
-
-  // const selectedDateWithoutTime = selectedDate
-  //   ? dayjs(selectedDate).format('YYYY-MM-DD')
-  //   : null
+  }, [carpool, currentDate])
 
   function handlePreviousMonth() {
     const previousMonthDate = currentDate.subtract(1, 'month')
@@ -63,7 +49,6 @@ export function Calendar() {
   }
 
   const shortWeekDays = getWeekDays({ short: true })
-
   const currentMonth = currentDate.format('MMMM')
   const currentMonthNumber = currentDate.format('MM')
   const currentYear = currentDate.format('YYYY')

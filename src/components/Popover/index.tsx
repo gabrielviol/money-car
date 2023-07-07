@@ -5,6 +5,8 @@ import { setCarpoolDay, setCarpoolState, setDriversState } from '@/store/reducer
 import dayjs from 'dayjs'
 import { Text } from '@ignite-ui/react'
 import { useState } from 'react'
+import { api } from '@/lib/axios'
+import { AxiosError } from 'axios'
 
 export function PopOver({ date, disabled }: any) {
   const dispatch = useDispatch()
@@ -17,10 +19,19 @@ export function PopOver({ date, disabled }: any) {
     return carpoolItem ? carpoolItem.idDriver : 'default'
   })
 
-  const handleSetDriver = (id: any) => {
-    const props = { id, dayInMonth }
-    setDriverId(id)
-    dispatch(setCarpoolDay(props))
+  const handleSetDriver = async (id: any) => {
+    try {
+      const props = { id, dayInMonth }
+      await api.post('/postCarpool', props)
+      setDriverId(id)
+      dispatch(setCarpoolDay(props))
+    } catch (err) {
+      if (err instanceof AxiosError && err.response?.data?.message) {
+        alert(err.response.data.message)
+        return
+      }
+      console.log(err)
+    }
   }
 
   const RadioGroupDemo = ({ value }: any) => {

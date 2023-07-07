@@ -1,7 +1,7 @@
 import { Calendar } from "@/components/Calendar"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setDrivers, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
+import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setCarpool, setCurrentMonth, setDrivers, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
 import { v4 as uuidv4 } from 'uuid';
 import { Trash, X } from "@phosphor-icons/react"
 import * as Popover from '@radix-ui/react-popover';
@@ -28,31 +28,57 @@ import {
 } from "./style"
 import { api } from "@/lib/axios";
 import { AxiosError } from "axios";
+import dayjs from "dayjs";
 
 export default function Home() {
+
   const drivers = useSelector(setDriversState)
+  console.log(drivers)
   const { valueForDay } = useSelector(CarpoolState)
   const dispatch = useDispatch()
 
   useEffect(() => {
+    const currentDate = dayjs().set('date', 1)
+    const currentMonthNumber = currentDate.format('MM')
+
+
     const fetchDrivers = async () => {
       try {
-        const response = await api.get('/getDrivers');
-        const drivers = response.data;
+        const response = await api.get('/getDrivers')
+        const drivers = response.data
         dispatch(setDrivers(drivers))
-        console.log(drivers);
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-    };
+    }
+    const fetchCarpool = async () => {
+      try {
+        const response = await api.get('/getCarpool')
+        const carpool = response.data
+        dispatch(setCarpool(carpool))
+        dispatch(setCurrentMonth(currentMonthNumber))
+        dispatch(getAmountDays())
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchDrivers()
+    fetchCarpool()
 
-    fetchDrivers();
-  }, []);
-
+  }, [])
 
   const DriversTable = () => {
     const [highlightedDriverId, setHighlightedDriverId] = useState(null)
     const [showDeleteBox, setShowDeleteBox] = useState(false)
+    const [isOpen, setIsOpen] = useState(true);
+
+    const handleOpen = () => {
+      setIsOpen(true);
+    };
+
+    const handleClose = () => {
+      setIsOpen(false);
+    };
 
     const handleMouseEnter = (driver: any) => {
       setHighlightedDriverId(driver.id)
@@ -64,8 +90,19 @@ export default function Home() {
       setShowDeleteBox(false)
     }
 
-    const handleRemoveDriver = (driver: any) => {
-      dispatch(removeDriver(driver))
+    const handleRemoveDriver = async (driverId: any) => {
+      try {
+        await api.delete('/deleteDriver', {
+          data: { id: driverId }
+        })
+        dispatch(removeDriver(driverId))
+      } catch (err) {
+        if (err instanceof AxiosError && err.response?.data?.message) {
+          alert(err.response.data.message)
+          return
+        }
+        console.log(err)
+      }
     }
 
     return (
@@ -91,11 +128,11 @@ export default function Home() {
                 <TableCell>{driver.days}</TableCell>
                 <TableCell>R$ {driver.total}</TableCell>
                 <TableCell>
-                  <Popover.Root>
-                    <PopoverTrigger>
+                  <Popover.Root modal={isOpen}>
+                    <PopoverTrigger onClick={handleOpen}>
                       {
                         driver.id === highlightedDriverId && showDeleteBox ?
-                          <span>
+                          <span >
                             <Trash size={24} weight="bold" />
                           </span> :
                           null
@@ -107,7 +144,7 @@ export default function Home() {
                           <span>Remover {driver.name}?</span>
                           <div>
                             <button onClick={() => handleRemoveDriver(driver.id)}>Sim</button>
-                            <button onClick={() => handleRemoveDriver(null)}>Não</button>
+                            <button onClick={handleClose}>Não</button>
                           </div>
                         </div>
                         <PopoverClose>
@@ -189,6 +226,7 @@ export default function Home() {
             name: newDriver,
             id: randomId
           })
+          dispatch(addNewDriver({ name: newDriver, id: randomId }))
         } catch (err) {
           if (err instanceof AxiosError && err.response?.data?.message) {
             alert(err.response.data.message)
@@ -196,7 +234,7 @@ export default function Home() {
           }
           console.log(err)
         }
-        dispatch(addNewDriver({ name: newDriver, id: randomId }))
+
         console.log(drivers)
         setNewDriver('')
         setIsActive(false)
