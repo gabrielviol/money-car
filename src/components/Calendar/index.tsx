@@ -1,3 +1,11 @@
+import { useState, useEffect } from "react"
+import * as React from 'react'
+import dayjs from 'dayjs'
+import { getWeekDays } from "@/utils/get-week-days"
+import { PopOver } from "../Popover"
+import { useDispatch, useSelector } from "react-redux"
+import { getAmountDays, setCarpoolState, setCurrentMonth } from "@/store/reducers/driverReducer"
+
 import { CaretLeft, CaretRight } from "@phosphor-icons/react"
 import {
   CalendarActions,
@@ -6,13 +14,6 @@ import {
   CalendarHeader,
   CalendarTitle
 } from "./styles"
-import { useState, useEffect } from "react"
-import dayjs from 'dayjs'
-import { getWeekDays } from "@/utils/get-week-days"
-import * as React from 'react'
-import { PopOver } from "../Popover"
-import { useDispatch, useSelector } from "react-redux"
-import { getAmountDays, setCarpoolState, setCurrentMonth } from "@/store/reducers/driverReducer"
 
 interface CalendarWeek {
   week: number

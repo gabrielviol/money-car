@@ -26,16 +26,24 @@ export const CalendarDay = styled((Popover.Trigger), {
   },
   variants: {
     selectedDriver: {
-      'default': {
+      '0': {
         background: '$gray600',
       },
-      'Gabriel': {
-        background: 'green',
+      '1': {
+        background: '#0080ff',
       },
-      'Rebecca': {
-        background: 'pink',
+      '2': {
+        background: '#7e75f8',
       },
-
+      '3': {
+        background: '#ff3f98',
+      },
+      '4': {
+        background: '#ff5457',
+      },
+      '5': {
+        background: '#ff7f00',
+      },
     }
   },
 })

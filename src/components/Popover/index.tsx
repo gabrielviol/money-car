@@ -1,12 +1,20 @@
-import * as Popover from '@radix-ui/react-popover'
-import { CalendarDay, Label, PopoverDay, RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from './styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCarpoolDay, setCarpoolState, setDriversState } from '@/store/reducers/driverReducer'
-import dayjs from 'dayjs'
-import { Text } from '@ignite-ui/react'
-import { useState } from 'react'
-import { api } from '@/lib/axios'
+import * as Popover from '@radix-ui/react-popover'
 import { AxiosError } from 'axios'
+import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/axios'
+import { setCarpoolDay, setCarpoolState, setDriversState } from '@/store/reducers/driverReducer'
+
+import { Text } from '@ignite-ui/react'
+import {
+  CalendarDay,
+  Label,
+  PopoverDay,
+  RadioGroupIndicator,
+  RadioGroupItem,
+  RadioGroupRoot
+} from './styles'
 
 export function PopOver({ date, disabled }: any) {
   const dispatch = useDispatch()
@@ -14,10 +22,18 @@ export function PopOver({ date, disabled }: any) {
   const drivers = useSelector(setDriversState)
   const dayInMonth = dayjs(date).format('YYYY-MM-DD')
 
-  const [driverId, setDriverId] = useState(() => {
+  const [driverId, setDriverId] = useState('default')
+  const [driverSelected, setDriverSelected] = useState(0);
+
+  useEffect(() => {
+    const index = drivers.findIndex((driver) => driverId === driver.id);
+    setDriverSelected(index);
+  }, [driverId]);
+
+  useEffect(() => {
     const carpoolItem = carpool.find((item) => item.day === dayInMonth)
-    return carpoolItem ? carpoolItem.idDriver : 'default'
-  })
+    setDriverId(carpoolItem ? carpoolItem.idDriver : 'default')
+  }, [carpool])
 
   const handleSetDriver = async (id: any) => {
     try {
@@ -49,7 +65,7 @@ export function PopOver({ date, disabled }: any) {
 
   return (
     <Popover.Root>
-      <CalendarDay disabled={disabled}>{date.get('date')}</CalendarDay>
+      <CalendarDay selectedDriver={driverSelected} disabled={disabled}>{date.get('date')}</CalendarDay>
       <Popover.Portal>
         <PopoverDay >
           <form>

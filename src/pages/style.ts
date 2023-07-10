@@ -79,6 +79,37 @@ export const TableRow = styled('tr', {
 export const TableCell = styled('td', {
   padding: '10px 5px',
   borderBottom: '1px solid #ddd',
+  'div': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.2rem'
+  },
+  variants: {
+    selectedDriver: {
+      '0': {
+        'svg': { color: '$gray600' }
+      },
+      '1': {
+        'svg': { color: '#0080ff' }
+      },
+      '2': {
+        'svg': { color: '#7e75f8', }
+
+      },
+      '3': {
+        'svg': { color: '#ff3f98', }
+
+      },
+      '4': {
+        'svg': { color: '#ff5457', }
+
+      },
+      '5': {
+        'svg': { color: '#ff7f00', }
+
+      },
+    }
+  },
 });
 
 export const PopoverTrigger = styled(Popover.Trigger, {

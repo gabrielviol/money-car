@@ -1,10 +1,14 @@
-import { Calendar } from "@/components/Calendar"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setCarpool, setCurrentMonth, setDrivers, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
 import { v4 as uuidv4 } from 'uuid';
-import { Trash, X } from "@phosphor-icons/react"
+import { AxiosError } from "axios";
+import dayjs from "dayjs";
 import * as Popover from '@radix-ui/react-popover';
+import { api } from "@/lib/axios";
+import { Calendar } from "@/components/Calendar"
+
+import { Square, Trash, X } from "@phosphor-icons/react"
 import {
   Button,
   Caption,
@@ -26,9 +30,6 @@ import {
   Value,
   Wrapper
 } from "./style"
-import { api } from "@/lib/axios";
-import { AxiosError } from "axios";
-import dayjs from "dayjs";
 
 export default function Home() {
 
@@ -77,7 +78,7 @@ export default function Home() {
     };
 
     const handleClose = () => {
-      setIsOpen(false);
+      return null
     };
 
     const handleMouseEnter = (driver: any) => {
@@ -90,7 +91,7 @@ export default function Home() {
       setShowDeleteBox(false)
     }
 
-    const handleRemoveDriver = async (driverId: any) => {
+    const handleRemoveDriver = async (driverId: string) => {
       try {
         await api.delete('/deleteDriver', {
           data: { id: driverId }
@@ -117,14 +118,14 @@ export default function Home() {
           </tr>
         </TableHead>
         <TableBody>
-          {drivers.filter(driver => driver.id !== "default").map((driver) => {
+          {drivers.filter(driver => driver.id !== "default").map((driver, i) => {
             return (
               <TableRow
                 key={driver.id}
                 onMouseEnter={() => handleMouseEnter(driver)}
                 onMouseLeave={handleMouseLeave}
               >
-                <TableCell>{driver.name}</TableCell>
+                <TableCell selectedDriver={i + 1} ><div><Square size={18} weight="fill" />{driver.name}</div></TableCell>
                 <TableCell>{driver.days}</TableCell>
                 <TableCell>R$ {driver.total}</TableCell>
                 <TableCell>
@@ -144,7 +145,7 @@ export default function Home() {
                           <span>Remover {driver.name}?</span>
                           <div>
                             <button onClick={() => handleRemoveDriver(driver.id)}>Sim</button>
-                            <button onClick={handleClose}>Não</button>
+                            <button onClick={() => { return null }}>Não</button>
                           </div>
                         </div>
                         <PopoverClose>
