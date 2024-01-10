@@ -30,6 +30,7 @@ import {
   Value,
   Wrapper
 } from "./style"
+import { fetchCarpool, fetchDrivers } from "@/store/fetchActions";
 
 export default function Home() {
 
@@ -42,30 +43,11 @@ export default function Home() {
     const currentDate = dayjs().set('date', 1)
     const currentMonthNumber = currentDate.format('MM')
 
+    dispatch(setCurrentMonth(currentMonthNumber))
+    dispatch(getAmountDays())
 
-    const fetchDrivers = async () => {
-      try {
-        const response = await api.get('/getDrivers')
-        const drivers = response.data
-        dispatch(setDrivers(drivers))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    const fetchCarpool = async () => {
-      try {
-        const response = await api.get('/getCarpool')
-        const carpool = response.data
-        dispatch(setCarpool(carpool))
-        dispatch(setCurrentMonth(currentMonthNumber))
-        dispatch(getAmountDays())
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchDrivers()
-    fetchCarpool()
-
+    dispatch(fetchDrivers())
+    dispatch(fetchCarpool())
   }, [])
 
   const DriversTable = () => {
