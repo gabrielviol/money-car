@@ -23,12 +23,11 @@ import {
    Container,
    Content,
    ContentAddNewDriver,
-   ContentValueForDay,
    DriversDash,
    Input,
-   Value,
    Wrapper
 } from "./style"
+import { ValueForDay } from "@/components/ValueForDay"
 
 export default function Home() {   
    const { valueForDay } = useSelector(CarpoolState)
@@ -44,52 +43,6 @@ export default function Home() {
       dispatch(fetchDrivers())
       dispatch(fetchCarpool())
    }, [])
-
-   
-
-   const ChangeValueForDay = () => {
-      const [isActive, setIsActive] = useState(false)
-      const [newValue, setNewValue] = useState('')
-
-      const changeValue = () => {
-         const newValueFloat = parseFloat(newValue)
-         if (!isNaN(newValueFloat) && newValueFloat > 0) {
-            dispatch(setValueForDay(newValueFloat))
-            dispatch(getAmountDays())
-            setNewValue('')
-            setIsActive(false)
-         } else {
-            setNewValue('')
-            setIsActive(false)
-         }
-      }
-
-      return (
-         <ContentValueForDay>
-            <span>Valor Diário</span>
-            <Wrapper>
-               <Value>R${valueForDay}</Value>
-               {isActive ? (
-                  <>
-                     <Input
-                        type="text"
-                        value={newValue}
-                        onChange={(e) => setNewValue(e.target.value)}
-                     />
-                     <Button onClick={changeValue}>
-                        Salvar
-                     </Button>
-                  </>
-               ) :
-                  (
-                     <Button onClick={() => setIsActive(true)}>
-                        Alterar
-                     </Button>
-                  )}
-            </Wrapper>
-         </ContentValueForDay>
-      )
-   }
 
    const AddNewDriver = () => {
       const [isActive, setIsActive] = useState(false)
@@ -165,7 +118,7 @@ export default function Home() {
          <DriversDash>
             <AddNewDriver />
             <DriversTable />
-            <ChangeValueForDay />
+            <ValueForDay />
          </DriversDash>
       </Container>
    )
