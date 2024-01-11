@@ -6,18 +6,16 @@ import dayjs from "dayjs"
 import { Calendar } from "@/components/Calendar"
 import { DriversTable } from "@/components/DriversTable"
 import { ValueForDay } from "@/components/ValueForDay"
+import { AddNewDriver } from "@/components/AddNewDriver"
 
 import { fetchCarpool, fetchDrivers } from "@/store/fetchActions"
-
-import { addNewDriver, getAmountDays, setCurrentMonth } from "@/store/reducers/driverReducer"
+import { getAmountDays, setCurrentMonth } from "@/store/reducers/driverReducer"
 
 import {
    Container,
    Content,
    DriversDash,
 } from "./styles"
-
-import { AddNewDriver } from "@/components/AddNewDriver"
 
 export default function Home() {   
    const dispatch = useDispatch()
