@@ -1,13 +1,22 @@
-import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setCurrentMonth, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
+import { useEffect, useRef, useState } from "react"
 import { v4 as uuidv4 } from 'uuid';
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 
 import { api } from "@/lib/axios";
 import { Calendar } from "@/components/Calendar"
+import { DriversTable } from "@/components/DriversTable";
 
+import { fetchCarpool, fetchDrivers } from "@/store/fetchActions";
+
+import { 
+   CarpoolState, 
+   addNewDriver, 
+   getAmountDays, 
+   setCurrentMonth, 
+   setValueForDay 
+} from "@/store/reducers/driverReducer"
 
 import {
    Button,
@@ -20,8 +29,6 @@ import {
    Value,
    Wrapper
 } from "./style"
-import { fetchCarpool, fetchDrivers } from "@/store/fetchActions";
-import { DriversTable } from "@/components/DriversTable";
 
 export default function Home() {
 
