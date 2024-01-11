@@ -1,40 +1,31 @@
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setCarpool, setCurrentMonth, setDrivers, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
+import { CarpoolState, addNewDriver, getAmountDays, removeDriver, setCurrentMonth, setDriversState, setValueForDay } from "@/store/reducers/driverReducer"
 import { v4 as uuidv4 } from 'uuid';
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import * as Popover from '@radix-ui/react-popover';
+
 import { api } from "@/lib/axios";
 import { Calendar } from "@/components/Calendar"
 
-import { Square, Trash, X } from "@phosphor-icons/react"
+
 import {
    Button,
-   Caption,
    Container,
    Content,
    ContentAddNewDriver,
    ContentValueForDay,
    DriversDash,
    Input,
-   PopoverClose,
-   PopoverContent,
-   PopoverTrigger,
-   Table,
-   TableBody,
-   TableCell,
-   TableHead,
-   TableHeader,
-   TableRow,
    Value,
    Wrapper
 } from "./style"
 import { fetchCarpool, fetchDrivers } from "@/store/fetchActions";
+import { DriversTable } from "@/components/DriversTable";
 
 export default function Home() {
 
-   const drivers = useSelector(setDriversState)
+   
    const { valueForDay } = useSelector(CarpoolState)
    const dispatch = useDispatch()
 
@@ -49,106 +40,7 @@ export default function Home() {
       dispatch(fetchCarpool())
    }, [])
 
-   const DriversTable = () => {
-      const [highlightedDriverId, setHighlightedDriverId] = useState(null)
-      const [showDeleteBox, setShowDeleteBox] = useState(false)
-      const [isOpen, setIsOpen] = useState(true);
-
-      const handleOpen = () => {
-         setIsOpen(true);
-      };
-
-      const handleClose = () => {
-         return null
-      };
-
-      const handleMouseEnter = (driver: any) => {
-         setHighlightedDriverId(driver.id)
-         setShowDeleteBox(true)
-      }
-
-      const handleMouseLeave = () => {
-         setHighlightedDriverId(null)
-         setShowDeleteBox(false)
-      }
-
-      const handleRemoveDriver = async (driverId: string) => {
-         try {
-            await api.delete('/deleteDriver', {
-               data: { id: driverId }
-            })
-            dispatch(removeDriver(driverId))
-         } catch (err) {
-            if (err instanceof AxiosError && err.response?.data?.message) {
-               alert(err.response.data.message)
-               return
-            }
-            console.log(err)
-         }
-      }
-
-      return (
-         <Table>
-            <Caption>Motoristas</Caption>
-            <TableHead>
-               <tr>
-                  <TableHeader>Motorista</TableHeader>
-                  <TableHeader>Dias</TableHeader>
-                  <TableHeader>Total</TableHeader>
-                  <TableHeader></TableHeader>
-               </tr>
-            </TableHead>
-            <TableBody>
-               {drivers.filter(driver => driver.id !== "default").map((driver, i) => {
-                  return (
-                     <TableRow
-                        key={driver.id}
-                        onMouseEnter={() => handleMouseEnter(driver)}
-                        onMouseLeave={handleMouseLeave}
-                     >
-                        <TableCell selectedDriver={i + 1} >
-                           <div>
-                              <Square size={18} weight="fill" />{driver.name}
-                           </div>
-                        </TableCell>
-                        <TableCell>{driver.days}</TableCell>
-                        <TableCell>R$ {driver.total}</TableCell>
-                        <TableCell>
-                           <Popover.Root modal={isOpen}>
-                              <PopoverTrigger onClick={handleOpen}>
-                                 {
-                                    driver.id === highlightedDriverId && showDeleteBox ?
-                                       <span >
-                                          <Trash size={24} weight="bold" />
-                                       </span> :
-                                       null
-                                 }
-                              </PopoverTrigger>
-                              <Popover.Portal>
-                                 <PopoverContent >
-                                    <div>
-                                       <span>Remover {driver.name}?</span>
-                                       <div>
-                                          <button onClick={() => handleRemoveDriver(driver.id)}>Sim</button>
-                                          <button onClick={() => { return null }}>Não</button>
-                                       </div>
-                                    </div>
-                                    <PopoverClose>
-                                       <X size={32} />
-                                    </PopoverClose>
-                                    <Popover.Arrow />
-                                 </PopoverContent>
-                              </Popover.Portal>
-                           </Popover.Root>
-                        </TableCell>
-                     </TableRow>
-                  )
-               })}
-
-            </TableBody>
-         </Table>
-      )
-   }
+   
 
    const ChangeValueForDay = () => {
       const [isActive, setIsActive] = useState(false)
