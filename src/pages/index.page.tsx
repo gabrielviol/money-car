@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import { v4 as uuidv4 } from 'uuid';
-import { AxiosError } from "axios";
-import dayjs from "dayjs";
+import { v4 as uuidv4 } from 'uuid'
+import { AxiosError } from "axios"
+import dayjs from "dayjs"
 
-import { api } from "@/lib/axios";
+import { api } from "@/lib/axios"
 import { Calendar } from "@/components/Calendar"
-import { DriversTable } from "@/components/DriversTable";
+import { DriversTable } from "@/components/DriversTable"
 
-import { fetchCarpool, fetchDrivers } from "@/store/fetchActions";
+import { fetchCarpool, fetchDrivers } from "@/store/fetchActions"
 
 import { 
    CarpoolState, 
@@ -30,9 +30,7 @@ import {
    Wrapper
 } from "./style"
 
-export default function Home() {
-
-   
+export default function Home() {   
    const { valueForDay } = useSelector(CarpoolState)
    const dispatch = useDispatch()
 

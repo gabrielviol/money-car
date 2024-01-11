@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { removeDriver, setDriversState } from "@/store/reducers/driverReducer";
+import { useDispatch, useSelector } from "react-redux"
+import { removeDriver, setDriversState } from "@/store/reducers/driverReducer"
 
 import { Square, Trash, X } from "@phosphor-icons/react"
 
-import { api } from "@/lib/axios";
-import { AxiosError } from "axios";
+import { api } from "@/lib/axios"
+import { AxiosError } from "axios"
 
-import * as Popover from '@radix-ui/react-popover';
+import * as Popover from '@radix-ui/react-popover'
 
 import {
    Caption,
@@ -25,19 +25,15 @@ import {
 export const DriversTable = () => {
    const [highlightedDriverId, setHighlightedDriverId] = useState(null)
    const [showDeleteBox, setShowDeleteBox] = useState(false)
-   const [isOpen, setIsOpen] = useState(true);
+   const [isOpen, setIsOpen] = useState(true)
 
    const dispatch = useDispatch()
 
    const drivers = useSelector(setDriversState)
 
    const handleOpen = () => {
-      setIsOpen(true);
-   };
-
-   const handleClose = () => {
-      return null
-   };
+      setIsOpen(true)
+   }
 
    const handleMouseEnter = (driver: any) => {
       setHighlightedDriverId(driver.id)
