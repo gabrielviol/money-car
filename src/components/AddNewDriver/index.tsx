@@ -1,4 +1,9 @@
 import { useEffect, useRef, useState } from "react"
+import { useDispatch } from "react-redux"
+import { v4 as uuidv4 } from 'uuid'
+import { AxiosError } from "axios"
+import { api } from "@/lib/axios"
+import { addNewDriver } from "@/store/reducers/driverReducer"
 
 import {
    Button,
@@ -7,11 +12,13 @@ import {
    Wrapper
 } from "./styles"
 
+
 export const AddNewDriver = () => {
    const [isActive, setIsActive] = useState(false)
    const [newDriver, setNewDriver] = useState('')
    const inputRef = useRef<HTMLInputElement>(null)
 
+   const dispatch = useDispatch()
 
    useEffect(() => {
       if (isActive && inputRef.current) {
