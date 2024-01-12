@@ -1,7 +1,8 @@
 import { api } from "@/lib/axios"
 import { setCarpool, setDrivers } from "../reducers/driverReducer"
+import { Dispatch } from "redux"
 
-export const fetchDrivers = () => async (dispatch: any) => {
+export const fetchDrivers = () => async (dispatch: Dispatch) => {
   try {
     const response = await api.get('/getDrivers')
     const drivers = response.data
@@ -11,7 +12,7 @@ export const fetchDrivers = () => async (dispatch: any) => {
   }
 }
 
-export const fetchCarpool = () => async (dispatch: any) => {
+export const fetchCarpool = () => async (dispatch: Dispatch) => {
   try {
     const response = await api.get('/getCarpool')
     const carpool = response.data
