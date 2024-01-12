@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { Dispatch } from "redux"
 
 import dayjs from "dayjs"
 
@@ -18,24 +17,19 @@ import {
    DriversDash,
 } from "./styles"
 
-
-const fetchData = async (dispatch: Dispatch) => {
-   const currentDate = dayjs().set('date', 1)
-   const currentMonthNumber = currentDate.format('MM')
- 
-   dispatch(setCurrentMonth(currentMonthNumber))
-   dispatch(getAmountDays())
- 
-   dispatch(fetchDrivers())
-   dispatch(fetchCarpool())
- }
-
 export default function Home() {   
    const dispatch = useDispatch()
-      
-      useEffect(() => {
-         fetchData(dispatch)
-      }, [])
+
+   useEffect(() => {
+      const currentDate = dayjs().set('date', 1)
+      const currentMonthNumber = currentDate.format('MM')
+
+      dispatch(setCurrentMonth(currentMonthNumber))
+      dispatch(getAmountDays())
+
+      dispatch(fetchDrivers())
+      dispatch(fetchCarpool())
+   }, [])
 
    return (
       <Container>
