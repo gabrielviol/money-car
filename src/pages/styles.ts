@@ -1,16 +1,25 @@
 import { Box, styled } from "@ignite-ui/react"
 
 export const Container = styled('div', {
-  width: '80%',
-  height: '100%',
-  padding: '50px 100px',
-  margin: '$6 auto',
-  display: 'flex',
-  justifyContent: 'center',
-  border: '1px solid white',
-  borderRadius: '$sm',
-  gap: '5rem'
-})
+   width: '80%',
+   height: '100%',
+   padding: '50px 100px',
+   margin: '$6 auto',
+   display: 'flex',
+   justifyContent: 'center',
+   border: '1px solid white',
+   borderRadius: '$sm',
+   gap: '5rem',
+   '@media (max-width: 990px)':{
+      width: '100%',
+      margin: '0 auto',
+      padding: '2rem',
+      gap: '2rem',
+      alignItems: 'center',
+      flexDirection: 'column-reverse'
+   }
+}
+)
 
 export const Content = styled(Box, {
   width: '40rem',
@@ -18,6 +27,7 @@ export const Content = styled(Box, {
   padding: 0,
   display: 'grid',
   position: 'relative',
+  border: '2px solid red',
 
   variants: {
     isTimePickerOpen: {
@@ -34,6 +44,11 @@ export const Content = styled(Box, {
       },
     },
   },
+  '@media (max-width: 990px)':{
+   width: '100%',
+   maxHeight:'600px',
+   maxWidth:'600px',
+}
 })
 
 export const DriversDash = styled('div', {
