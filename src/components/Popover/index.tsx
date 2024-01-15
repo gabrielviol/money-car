@@ -20,11 +20,11 @@ export function PopOver({ date, disabled }: any) {
    const dispatch = useDispatch()
    const carpool = useSelector(setCarpoolState)
    const drivers = useSelector(setDriversState)
-   const dayInMonth = dayjs(date).format('YYYY-MM-DD')
-
-   console.log(carpool)
+   const dayInMonth = dayjs(date).format('YYYY-MM-DD')   
    const [driverId, setDriverId] = useState('default')
    const [driverSelected, setDriverSelected] = useState(0);
+
+   console.log(driverSelected)
 
    useEffect(() => {
       const index = drivers.findIndex((driver) => driverId === driver.id);
