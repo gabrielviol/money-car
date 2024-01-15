@@ -49,14 +49,22 @@ export const CalendarDay = styled((Popover.Trigger), {
 })
 
 export const PopoverDay = styled((Popover.Content), {
-  minWidth: '320px',
+//   minWidth: '320px',
   padding: '3rem',
   display: 'flex',
   flexDirection: 'column',
   border: '1px solid white',
 
   background: '$gray600',
-  borderRadius: '$sm'
+  borderRadius: '$sm',
+
+  '@media (max-width: 990px)':{
+   width: '200px',
+   height: '150px',
+   padding: '1.5rem',
+   justifyContent: 'center',
+   alignItems: 'center'
+}
 })
 
 export const RadioGroupRoot = styled((RadioGroup.Root), {
