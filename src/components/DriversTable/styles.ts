@@ -6,7 +6,10 @@ export const Caption = styled('caption', {
    fontWeight: 'bold',
    marginBottom: '10px',
    paddingTop: '5px',
-   borderTop: '1px solid #ddd'
+   borderTop: '1px solid #ddd',
+   '@media (max-width: 990px)':{
+      fontSize: '16px',
+   }
  });
 
  export const PopoverClose = styled(Popover.Close, {
@@ -87,6 +90,9 @@ export const Caption = styled('caption', {
    lineHeight: '1.5',
    fontWeight: '$regular',
    fontSize: '$xls',
+   '@media (max-width: 990px)':{
+      fontSize: '$sm',
+   }
  });
 
  export const TableBody = styled('tbody', {

@@ -12,6 +12,9 @@ export const Button = styled('button', {
    '&:hover': {
      backgroundColor: '#2980b9',
    },
+   '@media (max-width: 990px)':{
+      fontSize: '14px',
+   }
  })
 
  export const ContentAddNewDriver = styled('div', {

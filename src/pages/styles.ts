@@ -27,7 +27,6 @@ export const Content = styled(Box, {
   padding: 0,
   display: 'grid',
   position: 'relative',
-  border: '2px solid red',
 
   variants: {
     isTimePickerOpen: {
@@ -44,18 +43,23 @@ export const Content = styled(Box, {
       },
     },
   },
+
   '@media (max-width: 990px)':{
    width: '100%',
    maxHeight:'600px',
    maxWidth:'600px',
-}
+   }
 })
 
 export const DriversDash = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  gap: '5rem'
+  gap: '5rem',
+  '@media (max-width: 990px)':{
+      width: '100%',
+      gap: '2rem'
+   }
 })
 
 
