@@ -19,7 +19,8 @@ import {
    TableCell,
    TableHead,
    TableHeader,
-   TableRow
+   TableRow,
+   TrashMobile
 } from "./styles"
 
 export const DriversTable = () => {
@@ -96,6 +97,9 @@ export const DriversTable = () => {
                                     </span> :
                                     null
                               }
+                                 <TrashMobile>
+                                    <Trash size={18} weight="bold" />
+                                 </TrashMobile>
                            </PopoverTrigger>
                            <Popover.Portal>
                               <PopoverContent >

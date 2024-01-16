@@ -79,18 +79,22 @@ export const Caption = styled('caption', {
      cursor: 'pointer',
      'svg': {
        color: '#3498db',
-     }
+     },
+     '@media (max-width: 990px)':{
+      display: 'none'
+   }
    }
  })
 
  export const Table = styled('table', {
    borderCollapse: 'collapse',
-   width: '100%',
+   width: '18rem',
    fontFamily: '$default',
    lineHeight: '1.5',
    fontWeight: '$regular',
    fontSize: '$xls',
    '@media (max-width: 990px)':{
+      width: '100%',
       fontSize: '$sm',
    }
  });
@@ -152,3 +156,15 @@ export const TableCell = styled('td', {
      background: '$gray500',
    }
  });
+
+ export const TrashMobile = styled('div', {
+   svg:{
+      display: 'none',
+      
+   },
+   '@media (max-width: 990px)':{
+      svg:{
+         display: 'flex',
+      }
+   }
+ })
