@@ -17,7 +17,7 @@ import {
    DriversDash,
 } from "./styles"
 
-export default function Home() {   
+export default function Home() {
    const dispatch = useDispatch()
 
    useEffect(() => {
