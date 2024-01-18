@@ -5,9 +5,9 @@ import { wrapper } from '@/store'
 globalStyles()
 
 function App({ Component, pageProps }: AppProps) {
-  return (
+   return (
       <Component {...pageProps} />
-  )
+   )
 }
 
 export default wrapper.withRedux(App);
