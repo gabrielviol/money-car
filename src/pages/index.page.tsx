@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux"
-import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useCallback, useEffect } from "react"
 
 import dayjs from "dayjs"
 
@@ -9,7 +9,7 @@ import { ValueForDay } from "@/components/ValueForDay"
 import { AddNewDriver } from "@/components/AddNewDriver"
 
 import { fetchCarpool, fetchDrivers } from "@/store/fetchActions"
-import { getAmountDays, setCurrentMonth } from "@/store/reducers/driverReducer"
+import { getAmountDays, setCurrentMonth, setDriversState } from "@/store/reducers/driverReducer"
 
 import {
    Container,
@@ -19,6 +19,7 @@ import {
 
 export default function Home() {
    const dispatch = useDispatch()
+   const drivers = useSelector(setDriversState)
 
    useEffect(() => {
       const currentDate = dayjs().set('date', 1)
@@ -30,7 +31,7 @@ export default function Home() {
       dispatch(fetchDrivers())
       dispatch(fetchCarpool())
    }, [])
-
+   
    return (
       <Container>
          <Content>

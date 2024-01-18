@@ -24,8 +24,6 @@ export function PopOver({ date, disabled }: any) {
    const [driverId, setDriverId] = useState('default')
    const [driverSelected, setDriverSelected] = useState(0);
 
-   console.log(driverSelected)
-
    useEffect(() => {
       const index = drivers.findIndex((driver) => driverId === driver.id);
       setDriverSelected(index);
