@@ -95,7 +95,7 @@ export const PopoverTrigger = styled(Popover.Trigger, {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '$gray900',
+      background: 'none',
       position: 'absolute',
       marginTop: '-1.5rem',
       marginLeft: '0.9rem',

@@ -30,8 +30,8 @@ export default function Home() {
       dispatch(setCurrentMonth(currentMonthNumber))
       dispatch(getAmountDays())
 
-      dispatch(fetchDrivers())
-      dispatch(fetchCarpool())
+      dispatch<any>(fetchDrivers())
+      dispatch<any>(fetchCarpool())
    }, [])
    
    return (
