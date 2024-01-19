@@ -9,7 +9,7 @@ import { ValueForDay } from "@/components/ValueForDay"
 import { AddNewDriver } from "@/components/AddNewDriver"
 
 import { fetchCarpool, fetchDrivers } from "@/store/fetchActions"
-import { getAmountDays, setCurrentMonth, setDriversState } from "@/store/reducers/driverReducer"
+import { getAmountDays, setCarpoolState, setCurrentMonth, setDriversState } from "@/store/reducers/driverReducer"
 
 import {
    Container,
@@ -20,6 +20,8 @@ import {
 export default function Home() {
    const dispatch = useDispatch()
    const drivers = useSelector(setDriversState)
+   const carpool = useSelector(setCarpoolState)
+   console.log(drivers, carpool)
 
    useEffect(() => {
       const currentDate = dayjs().set('date', 1)

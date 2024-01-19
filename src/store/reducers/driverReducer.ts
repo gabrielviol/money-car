@@ -47,7 +47,8 @@ export const driver = createSlice({
     },
     removeDriver(state, action) {
       const newDrivers = state.drivers.filter(driver => driver.id !== action.payload)
-      return { ...state, drivers: newDrivers }
+      const newCarpool = state.carpool.filter( carpool => carpool.idDriver !== action.payload )
+      return { ...state, drivers: newDrivers, carpool: newCarpool }
     },
     setCurrentMonth(state, action) {
       state.currentMonth = action.payload
