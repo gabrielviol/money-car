@@ -16,6 +16,7 @@ export type AppState = ReturnType<AppStore["getState"]>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   AppState,
+  
   unknown,
   Action
 >;
