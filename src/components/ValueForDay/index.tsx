@@ -13,7 +13,7 @@ import {
 export const ValueForDay = () => {
    const [isActive, setIsActive] = useState(false)
    const [newValue, setNewValue] = useState('')
-   
+
    const { valueForDay } = useSelector(CarpoolState)
    const dispatch = useDispatch()
 
