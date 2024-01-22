@@ -33,7 +33,7 @@ export default function Home() {
       dispatch<any>(fetchDrivers())
       dispatch<any>(fetchCarpool())
    }, [])
-   
+
    return (
       <Container>
          <Content>
