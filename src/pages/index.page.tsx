@@ -21,7 +21,6 @@ export default function Home() {
    const dispatch = useDispatch()
    const drivers = useSelector(setDriversState)
    const carpool = useSelector(setCarpoolState)
-   console.log(drivers, carpool)
 
    useEffect(() => {
       const currentDate = dayjs().set('date', 1)
