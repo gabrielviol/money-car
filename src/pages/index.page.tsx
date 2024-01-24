@@ -9,7 +9,7 @@ import { ValueForDay } from "@/components/ValueForDay"
 import { AddNewDriver } from "@/components/AddNewDriver"
 
 import { fetchCarpool, fetchDrivers } from "@/store/fetchActions"
-import { getAmountDays, setCarpoolState, setCurrentMonth, setDriversState } from "@/store/reducers/driverReducer"
+import { getAmountDays, setCurrentMonth } from "@/store/reducers/driverReducer"
 
 import {
    Container,
@@ -19,7 +19,7 @@ import {
 
 export default function Home() {
    const dispatch = useDispatch()
-   
+
    useEffect(() => {
       const currentDate = dayjs().set('date', 1)
       const currentMonthNumber = currentDate.format('MM')
