@@ -19,9 +19,7 @@ import {
 
 export default function Home() {
    const dispatch = useDispatch()
-   const drivers = useSelector(setDriversState)
-   const carpool = useSelector(setCarpoolState)
-
+   
    useEffect(() => {
       const currentDate = dayjs().set('date', 1)
       const currentMonthNumber = currentDate.format('MM')
