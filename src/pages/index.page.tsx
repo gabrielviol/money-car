@@ -23,6 +23,7 @@ export default function Home() {
    useEffect(() => {
       const currentDate = dayjs().set('date', 1)
       const currentMonthNumber = currentDate.format('MM')
+      
 
       dispatch(setCurrentMonth(currentMonthNumber))
       dispatch(getAmountDays())
